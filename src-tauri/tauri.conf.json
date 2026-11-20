@@ -78,8 +78,8 @@
     "updater": {
       "pubkey": "",
       "endpoints": [
-        "https://github.com/gavin/trade-island/releases/latest/download/latest.json",
-        "https://gh-proxy.com/https://github.com/gavin/trade-island/releases/latest/download/latest.json"
+        "https://github.com/Alonzo-G/trade-island/releases/latest/download/latest.json",
+        "https://gh-proxy.com/https://github.com/Alonzo-G/trade-island/releases/latest/download/latest.json"
       ],
       "windows": {
         "installMode": "passive"

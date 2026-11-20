@@ -1,12 +1,12 @@
 // Builds the updater manifest that the app downloads from
-// https://github.com/gavin/trade-island/releases/latest/download/latest.json
+// https://github.com/Alonzo-G/trade-island/releases/latest/download/latest.json
 //
 // Usage: node scripts/release/make-latest-json.mjs [--notes-file docs/releases/vX.Y.Z.md]
 import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { msiNames } from "./msi-version.mjs";
 
-const REPO = "gavin/trade-island";
+const REPO = "Alonzo-G/trade-island";
 const CONFIG = "src-tauri/tauri.conf.json";
 const RELEASE_DIR = resolve(process.env.CARGO_TARGET_DIR || "src-tauri/target", "release");
 const BUNDLE_DIR = join(RELEASE_DIR, "bundle/nsis");

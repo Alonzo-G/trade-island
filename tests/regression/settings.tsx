@@ -349,7 +349,7 @@ if (!automated) {
     check(linkTitles.join() === "觉得小岛还不错？,打赏作者", `About lists the community group, the star and the tip in one group (${linkTitles.join()})`);
     const authorLink = document.querySelector<HTMLAnchorElement>(".settings-sidebar a.settings-sidebar__item--link");
     const sidebarItems = [...document.querySelectorAll<HTMLElement>(".settings-sidebar__item")].map((item) => item.textContent);
-    check(authorLink?.href === "https://github.com/gavin" && sidebarItems.slice(-2).join() === "关于,关于作者", "关于作者是侧栏里关于下面的一项，直接打开 GitHub");
+    check(authorLink?.href === "https://github.com/Alonzo-G" && sidebarItems.slice(-2).join() === "关于,关于作者", "关于作者是侧栏里关于下面的一项，直接打开 GitHub");
     check(!document.querySelector(".community-group"), "Trade edition hides the community group (no QR URL)");
     const supportToggle = element<HTMLButtonElement>(".support-author:not(.community-group) .support-author__toggle");
     check(supportToggle.getAttribute("aria-expanded") === "false" && !document.querySelector(".support-author__code"), "Support the author starts closed");

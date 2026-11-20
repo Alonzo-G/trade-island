@@ -6,7 +6,7 @@ import { SettingsLinkButton } from "../../components/settings/SettingsLinkButton
 import { SettingsRow } from "../../components/settings/SettingsRow";
 import { useTranslation } from "../../i18n";
 
-const SPEC_URL = "https://github.com/gavin/trade-island/blob/main/docs/plugins/README.md";
+const SPEC_URL = "https://github.com/Alonzo-G/trade-island/blob/main/docs/plugins/README.md";
 
 /** The public development guide is available before plugin execution ships. */
 export function PluginDevelopmentPage() {
