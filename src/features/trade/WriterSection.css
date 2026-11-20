@@ -1,0 +1,125 @@
+.writer-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.writer-form__picks {
+  display: flex;
+  gap: 6px;
+}
+
+.writer-form__picks select {
+  flex: 1;
+  padding: 3px 8px;
+  border: 1px solid var(--color-white-a12);
+  border-radius: var(--corner-sm);
+  corner-shape: var(--corner-shape);
+  background: var(--color-white-a04);
+  color: inherit;
+  font-size: 12px;
+}
+
+.writer-form__picks select:focus-visible {
+  outline: 1px solid var(--color-accent);
+  outline-offset: 0;
+}
+
+.writer-form__brief {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--color-white-a12);
+  border-radius: var(--corner-sm);
+  corner-shape: var(--corner-shape);
+  background: var(--color-white-a04);
+  color: inherit;
+  font-size: 12px;
+  line-height: 1.5;
+  resize: none;
+}
+
+.writer-form__brief:focus-visible {
+  outline: 1px solid var(--color-accent);
+  outline-offset: 0;
+}
+
+.writer-form__send {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  align-self: flex-start;
+  padding: 5px 14px;
+  border: 0;
+  border-radius: var(--corner-sm);
+  corner-shape: var(--corner-shape);
+  background: var(--color-accent);
+  color: #10151b;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.writer-form__send:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.writer-form__spin {
+  animation: writer-spin 900ms linear infinite;
+}
+
+@keyframes writer-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .writer-form__spin {
+    animation: none;
+  }
+}
+
+.writer-error {
+  margin: 4px 0 0;
+  padding: 0 10px;
+  font-size: 11px;
+  color: var(--color-danger);
+}
+
+.writer-draft {
+  position: relative;
+  margin-top: 4px;
+  padding: 10px 12px;
+  border-radius: var(--corner-md);
+  corner-shape: var(--corner-shape);
+  background: var(--color-white-a04);
+}
+
+.writer-draft pre {
+  margin: 0;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 200px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.writer-draft__copy {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 2px 10px;
+  border: 1px solid var(--color-white-a12);
+  border-radius: var(--corner-xs);
+  background: transparent;
+  color: inherit;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.writer-draft__copy:hover {
+  background: var(--color-white-a08);
+}

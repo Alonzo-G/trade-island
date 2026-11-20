@@ -3,6 +3,7 @@ import { Moon, RefreshCw, Sun } from "lucide-react";
 import { useWorldClock } from "../world-clock/useWorldClock";
 import { useFxRates } from "../fx-rates/useFxRates";
 import { QuoteSection } from "../quoter/QuoteSection";
+import { WriterSection } from "./WriterSection";
 import type { ZoneView } from "../world-clock/zones";
 import "./TradeToolsPanel.css";
 
@@ -45,6 +46,7 @@ export function TradeToolsPanel({ isOpen }: { isOpen: boolean }) {
         {updated && <p className="trade-fx__updated">{t.trade.fxUpdated(new Date(updated).getTime())}</p>}
       </div>
       <QuoteSection rates={fx.rates} />
+      <WriterSection />
     </section>
   );
 }

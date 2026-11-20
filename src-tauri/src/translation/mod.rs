@@ -1,6 +1,4 @@
-mod direction;
-mod free;
-mod provider;
+pub(crate) mod provider;
 
 use crate::clipboard_history::{parse_shortcut_binding, ShortcutBinding};
 use arboard::Clipboard;
@@ -158,7 +156,7 @@ fn credential(provider: &Provider) -> Result<Entry, String> {
     Entry::new("com.focusd.island.translation", provider.id).map_err(|error| error.to_string())
 }
 
-fn read_secret(provider: &Provider) -> Result<Option<String>, String> {
+pub(crate) fn read_secret(provider: &Provider) -> Result<Option<String>, String> {
     match credential(provider)?.get_password() {
         Ok(secret) => Ok(Some(secret)),
         Err(KeyringError::NoEntry) => Ok(None),

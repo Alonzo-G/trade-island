@@ -100,12 +100,3 @@ fn now_ms() -> i64 {
         .unwrap_or(0)
 }
 
-macro_rules! tauri_commands {
-    ($next:ident [$($done:tt)*] $($rest:tt)*) => {
-        $next!([$($done)*
-            crate::trade::fx::get_fx_rates,
-        ] $($rest)*)
-    };
-}
-
-pub(crate) use tauri_commands;

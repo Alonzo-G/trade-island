@@ -20,6 +20,25 @@ export type TradeText = {
   freightLabel: string;
   packageLabel: string;
   quoteInvalid: string;
+  writer: {
+    title: string;
+    scenario: string;
+    language: string;
+    briefHint: string;
+    write: string;
+    copy: string;
+    copied: string;
+    copyFailed: string;
+    english: string;
+    chinese: string;
+    scenarios: {
+      firstOutreach: string;
+      inquiryReply: string;
+      followUp: string;
+      thanks: string;
+      complaintReply: string;
+    };
+  };
 };
 
 export const zhCN: TradeText = {
@@ -44,6 +63,25 @@ export const zhCN: TradeText = {
   freightLabel: "运费/件",
   packageLabel: "整箱货值",
   quoteInvalid: "请检查输入：成本、利润率、数量和运费需在有效范围内。",
+  writer: {
+    title: "AI 写作助手",
+    scenario: "场景",
+    language: "写作语言",
+    briefHint: "用中文写要点：产品、客户情况、这封邮件要达成什么（如： Bluetooth speaker，客户上周询价 2000 件，回复报 FOB 价并要 PI 资料）",
+    write: "生成邮件",
+    copy: "复制",
+    copied: "已复制",
+    copyFailed: "无法访问剪贴板。",
+    english: "英文",
+    chinese: "中文",
+    scenarios: {
+      firstOutreach: "开发信",
+      inquiryReply: "询盘回复",
+      followUp: "跟进催复",
+      thanks: "订单致谢",
+      complaintReply: "投诉处理",
+    },
+  },
 };
 
 export const en: TradeText = {
@@ -68,4 +106,23 @@ export const en: TradeText = {
   freightLabel: "Freight / unit",
   packageLabel: "Carton value",
   quoteInvalid: "Check the inputs: cost, margin, units and freight must be in range.",
+  writer: {
+    title: "AI writer",
+    scenario: "Scenario",
+    language: "Language",
+    briefHint: "Key points in any language: product, customer context, what this mail should achieve",
+    write: "Draft mail",
+    copy: "Copy",
+    copied: "Copied",
+    copyFailed: "Clipboard is unavailable.",
+    english: "English",
+    chinese: "Chinese",
+    scenarios: {
+      firstOutreach: "First outreach",
+      inquiryReply: "Inquiry reply",
+      followUp: "Follow-up",
+      thanks: "Order thanks",
+      complaintReply: "Complaint reply",
+    },
+  },
 };

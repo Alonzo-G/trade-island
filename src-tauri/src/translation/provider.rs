@@ -4,7 +4,7 @@
 use reqwest::Url;
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
-pub(super) enum ProviderKind {
+pub(crate) enum ProviderKind {
     /// OpenAI-compatible chat completions with a stored key and a model.
     Chat,
     /// Google Translate's public web endpoint, no key.
@@ -13,16 +13,16 @@ pub(super) enum ProviderKind {
     MyMemory,
 }
 
-pub(super) struct Provider {
+pub(crate) struct Provider {
     /// Stable id shared with the frontend; also the Windows credential user name.
-    pub(super) id: &'static str,
+    pub(crate) id: &'static str,
     /// Name used in error messages, which the translation window shows as they are.
-    pub(super) name: &'static str,
-    pub(super) kind: ProviderKind,
+    pub(crate) name: &'static str,
+    pub(crate) kind: ProviderKind,
     /// `None` for the custom provider, whose base URL comes from the user.
-    base_url: Option<&'static str>,
+    pub(crate) base_url: Option<&'static str>,
     /// `None` where the user has to name a model from the provider's catalogue.
-    default_model: Option<&'static str>,
+    pub(crate) default_model: Option<&'static str>,
 }
 
 // Mirrored by TRANSLATION_PROVIDERS in src/features/translation/providers.ts.
@@ -93,12 +93,12 @@ const PROVIDERS: &[Provider] = &[
 ];
 
 /// The provider older versions used for everything; requests without one go here.
-pub(super) const DEFAULT_PROVIDER_ID: &str = "deepseek";
+pub(crate) const DEFAULT_PROVIDER_ID: &str = "deepseek";
 
 const MAX_BASE_URL_LENGTH: usize = 500;
 const MAX_MODEL_LENGTH: usize = 200;
 
-pub(super) fn find_provider(id: Option<&str>) -> Result<&'static Provider, String> {
+pub(crate) fn find_provider(id: Option<&str>) -> Result<&'static Provider, String> {
     let id = id.unwrap_or(DEFAULT_PROVIDER_ID);
     PROVIDERS
         .iter()
@@ -107,7 +107,7 @@ pub(super) fn find_provider(id: Option<&str>) -> Result<&'static Provider, Strin
 }
 
 /// The chat completions URL: the preset base URL, or a checked custom one.
-pub(super) fn completions_url(
+pub(crate) fn completions_url(
     provider: &Provider,
     custom_base_url: Option<&str>,
 ) -> Result<Url, String> {
@@ -151,7 +151,7 @@ fn validate_custom_base_url(raw: &str) -> Result<String, String> {
     Ok(url.to_string())
 }
 
-pub(super) fn resolve_model(provider: &Provider, model: Option<&str>) -> Result<String, String> {
+pub(crate) fn resolve_model(provider: &Provider, model: Option<&str>) -> Result<String, String> {
     let model = model.map(str::trim).filter(|model| !model.is_empty());
     match model.or(provider.default_model) {
         Some(model) if model.chars().count() <= MAX_MODEL_LENGTH => Ok(model.to_string()),
@@ -161,7 +161,7 @@ pub(super) fn resolve_model(provider: &Provider, model: Option<&str>) -> Result<
 }
 
 /// The translation in a chat completions response, or why there is none.
-pub(super) fn parse_completion(
+pub(crate) fn parse_completion(
     provider: &Provider,
     result: &serde_json::Value,
 ) -> Result<String, String> {
