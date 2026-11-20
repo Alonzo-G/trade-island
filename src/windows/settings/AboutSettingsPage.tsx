@@ -1,7 +1,7 @@
 import { SettingsGroup } from "../../components/settings/SettingsGroup";
 import { SettingsLinkButton } from "../../components/settings/SettingsLinkButton";
 import { SettingsRow } from "../../components/settings/SettingsRow";
-import { ProjectIdentitySection, ProjectLinksSection } from "../../features/updater/ProjectSettingsSection";
+import { ProjectIdentitySection } from "../../features/updater/ProjectSettingsSection";
 import { ChangelogSection } from "../../features/updater/ChangelogSection";
 import { UpdateSettingsSection } from "../../features/updater/UpdateSettingsSection";
 import { AppLogSettingsSection } from "../../features/diagnostics/AppLogSettingsSection";
@@ -16,7 +16,6 @@ export function AboutSettingsPage() {
     <>
       <ProjectIdentitySection />
       <UpdateSettingsSection />
-      <ProjectLinksSection />
       <AppLogSettingsSection />
       <ChangelogSection />
       <SettingsGroup>

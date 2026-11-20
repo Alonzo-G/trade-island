@@ -6,14 +6,10 @@ import { QuotaAlertPopup } from "../../features/agent-status/QuotaAlertPopup";
 import type { AgentSession } from "../../features/agent-status/session";
 import type { AgentVisualState } from "../../features/agent-status/status";
 import type { CollapsedItem, CollapsedSlot } from "../../features/appearance/types";
-import type { MediaState } from "../../features/media/api";
-import { CollapsedLyric } from "../../features/media/CollapsedLyric";
-import type { LyricsSettings } from "../../features/media/lyrics/useLyrics";
 import { CollapsedMessageContent } from "../../features/messages/CollapsedMessageContent";
 import { MessageSourceIcon } from "../../features/messages/MessageSourceIcon";
 import { MessageNoticeReader } from "../../features/messages/MessageNoticeReader";
 // After CollapsedMessageContent, matching the original stylesheet order.
-import { MusicWaveButton } from "../../features/media/MusicWaveButton";
 import { isOfficeSource, messagePreviewText, type MessagePreview, type MessageSource } from "../../features/messages/messagePreview";
 import { openOfficeClient } from "../../features/messages/office-im/useOfficeIm";
 import type { MailController } from "../../features/messages/mail/MailPanel";
@@ -52,17 +48,12 @@ type IslandCollapsedBarProps = {
   /** Where the text and each status icon sit, left to right (Settings → Appearance). */
   collapsedLayout: readonly CollapsedSlot[];
   /** The playing song's cover, or null when it is not shown. */
-  collapsedCover: string | null;
-  lyricsSettings: LyricsSettings & { lyricsOffsetMs: number };
   agentSession: AgentSession | null;
   /**
    * Agent sessions still working, shown where the tuck dot was; null while the AI Agent switch
    * is off, which keeps the tuck dot.
    */
   agentSessionCount: number | null;
-  mediaState: MediaState;
-  /** False while music is switched off, which hides the waveform button. */
-  showMusic: boolean;
   /** Files on the shelf, or null when the count is not shown. */
   shelfCount: number | null;
   /** Claude's or Codex's usage reaching the alert level, or resetting; it takes the place of the text while shown. */
@@ -96,12 +87,8 @@ export function IslandCollapsedBar({
   collapsedTodoCount,
   collapsedItem,
   collapsedLayout,
-  collapsedCover,
-  lyricsSettings,
   agentSession,
   agentSessionCount,
-  mediaState,
-  showMusic,
   shelfCount,
   quotaAlert = null,
   agentVisualState,
@@ -115,7 +102,6 @@ export function IslandCollapsedBar({
   const updatePending = useUpdatePending();
   const { didDragRef, prepareWindowDrag, handleWindowDragMove, cancelWindowDrag } =
     useWindowDragGesture(isTucked || positionLocked, onWindowDragStart);
-  const isMusicPlaying = mediaState.playbackStatus === "playing";
   const pulseClassName = [
     "island__pulse",
     `island__pulse--agent-${agentVisualState}`,
@@ -188,7 +174,6 @@ export function IslandCollapsedBar({
             <span className={pulseClassName} />
           </span>
           {updatePending && <span className="island-update-dot island-update-dot--inline" aria-hidden="true" />}
-          {collapsedCover && <img className="collapsed-cover" src={collapsedCover} alt="" draggable={false} />}
           <CollapsedMessageContent preview={preview} enabled={!isExpanded && !isTucked}>
             {quotaAlert ? (
               <QuotaAlertPopup alert={quotaAlert} />
@@ -206,9 +191,6 @@ export function IslandCollapsedBar({
                 )}
                 <span className="island__agent-session-title">{shownAgent.title}</span>
               </span>
-            )}
-            {showCollapsedText && collapsedItem === "lyrics" && (
-              <CollapsedLyric mediaState={mediaState} lyricsSettings={lyricsSettings} active={!isExpanded} />
             )}
             {showCollapsedText && collapsedItem === "todo" && collapsedTaskTitle && (todoTimer && !todoRotation ? (
               <span className={`island__active-task island__active-task--timed${isTodoTimerEndingSoon(todoTimer) ? " island__active-task--ending" : ""}`} key={collapsedTaskTitle}>
@@ -245,15 +227,6 @@ export function IslandCollapsedBar({
         <Inbox size={14} strokeWidth={1.5} absoluteStrokeWidth aria-hidden="true" />
         <span>{shelfCount}</span>
       </button>
-      ),
-    music: showMusic && (
-      <MusicWaveButton
-        isAvailable={mediaState.available || mediaState.audioActive}
-        isPlaying={isMusicPlaying}
-        audioPeak={mediaState.audioPeak}
-        label={t.island.openMusic}
-        onClick={() => onOpenPage("music")}
-      />
       ),
     agents: agentSessionCount === null ? (
       <button

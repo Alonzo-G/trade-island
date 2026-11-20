@@ -62,6 +62,8 @@ localStorage.setItem("focusd-island-settings", JSON.stringify({
   tuckStyle,
   // Capsules are what this tour's geometry checks look at; the default (icons) is covered below.
   pageButtonStyle: "capsule",
+  // The trade tools page is a tall scrolling panel; let it open at its full height here.
+  maxPanelHeight: 560,
   // The waiting session would pop the Agent page open at a random moment and race the geometry checks.
   agentAlertWaiting: false, agentAlertCompleted: false, agentAlertFailed: false,
   lyricsOnline: query.get("lyrics") !== "0",
@@ -80,6 +82,8 @@ mockIPC((command, payload) => {
   const args = (payload ?? {}) as Record<string, unknown>;
   switch (command) {
     case "get_workbuddy_usage": return { status: "signedOut" };
+    case "get_fx_rates": return { fetchedAt: Date.now(), nextUpdateAt: Date.now() + 86_400_000, base: "USD",
+      rates: [["CNY", 6.69], ["EUR", 0.91], ["GBP", 0.76], ["JPY", 159.75]] };
     case "get_office_im_state": case "set_office_im_enabled": case "clear_office_im": return tourOffice(empty);
     case "plugin:app|version": return "3.0.9";
     case "get_media_diagnostics": return { players: [] };
@@ -247,9 +251,9 @@ if (!automated) {
     };
     await drag(".dot-button--todo", ".dot-button--clipboard");
     const savedOrder = JSON.parse(localStorage.getItem("focusd-island-settings") ?? "{}").pageOrder as string[] | undefined;
-    check(dotOrder().join() === "music,clipboard,todo,shelf,translation,trade" && savedOrder?.join() === "music,clipboard,todo,shelf,translation,trade" && island().className === pageBefore,
+    check(dotOrder().join() === "clipboard,todo,shelf,translation,trade" && savedOrder?.join() === "clipboard,todo,shelf,translation,trade" && island().className === pageBefore,
       `拖动页面圆点可以调整顺序并保存，拖完不切页（${dotOrder().join()}）`);
-    await drag(".dot-button--todo", ".dot-button--music");
+    await drag(".dot-button--todo", ".dot-button--clipboard");
     check(dotOrder()[0] === "todo", "圆点可以拖回原来的位置");
     // Translation is one of the page capsules on the left; the header's old button is gone.
     await click(".dot-button--translation");
@@ -298,7 +302,7 @@ if (!automated) {
 
     const pages: Array<[string, string]> = [
       [".dot-button--todo", "待办"],
-      [".dot-button--music", "音乐"],
+      [".dot-button--trade", "外贸工具"],
       [".dot-button--clipboard", "剪贴板"],
       [".dot-button--shelf", "文件中转"],
       [".island__agent-button", "AI Agent"],
@@ -332,30 +336,22 @@ if (!automated) {
     // Appearance → Collapsed island: three items in order, moved with the arrow keys on a handle.
     await click(".settings-sidebar__item[data-category='appearance']");
     const capsule = document.querySelector<HTMLButtonElement>('[aria-label="页面按钮"] button:first-child')!;
-    check(capsule.getAttribute("aria-pressed") === "true" && document.querySelectorAll(".dot-button--capsule").length === 7, "已保存为胶囊的页面按钮保持胶囊（含消息）");
+    check(capsule.getAttribute("aria-pressed") === "true" && document.querySelectorAll(".dot-button--capsule").length === 6, "已保存为胶囊的页面按钮保持胶囊（含消息）");
     await click('[aria-label="页面按钮"] button:last-child');
     const savedStyle = JSON.parse(localStorage.getItem("focusd-island-settings") ?? "{}").pageButtonStyle;
-    check(document.querySelectorAll(".dot-button--icon svg, .island__agent-button svg.lucide-bot").length === 8 &&
-      document.querySelectorAll(".agent-page-preview__dots svg").length === 6 && savedStyle === "icon", "七个入口切换为图标，外观预览和保存同步");
+    check(document.querySelectorAll(".dot-button--icon svg, .island__agent-button svg.lucide-bot").length === 7 &&
+      document.querySelectorAll(".agent-page-preview__dots svg").length === 5 && savedStyle === "icon", "六个入口切换为图标，外观预览和保存同步");
     await click('[aria-label="页面按钮"] button:first-child');
     const priority = () => [...document.querySelectorAll<HTMLElement>(".reorder-list__item")].map((item) => item.dataset.reorderId);
-    check(priority().join() === "agent,lyrics,todo", "外观页列出收起时的显示顺序：Agent 任务、歌词、待办");
+    check(priority().join() === "agent,todo", "外观页列出收起时的显示顺序：Agent 任务、待办");
     await act(async () => {
       document.querySelector<HTMLElement>(".reorder-list__handle")!.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }));
     });
     const savedPriority = JSON.parse(localStorage.getItem("focusd-island-settings") ?? "{}").collapsedPriority as string[] | undefined;
-    check(priority().join() === "lyrics,agent,todo" && savedPriority?.join() === "lyrics,agent,todo", "按方向键调整顺序并保存");
-    // Appearance → On the island: the music waveform moved left of the text sits on the
-    // collapsed island's left.
-    const barOrder = () => [...document.querySelectorAll<HTMLElement>(".island__collapsed > *")].map((element) => element.classList[0]).join();
-    for (let step = 0; step < 3; step++) {
-      await act(async () => {
-        document.querySelector<HTMLElement>(".collapsed-layout__slot--music")!.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft", bubbles: true }));
-      });
-    }
-    const savedLayout = JSON.parse(localStorage.getItem("focusd-island-settings") ?? "{}").collapsedLayout as string[] | undefined;
-    check(savedLayout?.join() === "music,text,mail,shelf,agents" && barOrder().startsWith("music-wave-button,island__text-slot"),
-      `岛上的排列：音乐波形移到文字左边，收起的岛也跟着变（${barOrder()}）`);
+    check(priority().join() === "todo,agent" && savedPriority?.join() === "todo,agent", "按方向键调整顺序并保存");
+    // Appearance → On the island: the collapsed layout editor lists the four remaining slots.
+    const slotCount = document.querySelectorAll<HTMLElement>(".collapsed-layout__slot").length;
+    check(slotCount === 4, `收起态布局编辑器列出 4 个槽位（${slotCount}）`);
     await click(".settings-sidebar__item[data-category='general']");
     const lockSwitch = () => [...document.querySelectorAll<HTMLElement>(".settings-row")]
       .find((row) => row.querySelector(".settings-row__title")?.textContent === "锁定小岛位置")!.querySelector<HTMLInputElement>("[role='switch']")!;

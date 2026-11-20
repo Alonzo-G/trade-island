@@ -17,8 +17,6 @@ import type { AgentUsages } from "../../features/agent-status/usage";
 import type { IslandSettings } from "../../features/appearance/types";
 import { ClipboardHistoryPanel } from "../../features/clipboard/ClipboardHistoryPanel";
 import type { useClipboardHistory } from "../../features/clipboard/useClipboardHistory";
-import { MusicPlayerPanel } from "../../features/media/MusicPlayerPanel";
-import type { useMediaState } from "../../features/media/useMediaState";
 import { FileShelfPanel } from "../../features/file-shelf/FileShelfPanel";
 import type { useFileShelf } from "../../features/file-shelf/useFileShelf";
 import { TradeToolsPanel } from "../../features/trade/TradeToolsPanel";
@@ -47,7 +45,6 @@ type IslandPagesProps = {
   wechatReminders: ReturnType<typeof useWeChatReminders>;
   messageSource: MessageView["messageSource"];
   openMessages: MessageView["openMessages"];
-  media: ReturnType<typeof useMediaState>;
   clipboard: ReturnType<typeof useClipboardHistory>;
   agentSessions: AgentSessionSummary[];
   unseenAgentSessions: UnseenSessions;
@@ -58,6 +55,8 @@ type IslandPagesProps = {
   fileShelf: ReturnType<typeof useFileShelf>;
   isShelfDropping: boolean;
   notebookProps: ReturnType<typeof useTodos>["notebookProps"];
+  /** Reports the trade page's content height; the island sizes itself to it. */
+  onTradeHeight: (height: number) => void;
 };
 
 /** The expanded island's page panels; the one for `page` shows. */
@@ -75,7 +74,6 @@ export function IslandPages({
   wechatReminders,
   messageSource,
   openMessages,
-  media,
   clipboard,
   agentSessions,
   unseenAgentSessions,
@@ -86,8 +84,8 @@ export function IslandPages({
   fileShelf,
   isShelfDropping,
   notebookProps,
+  onTradeHeight,
 }: IslandPagesProps): ReactNode {
-  const { mediaState, isMediaTrackChanging, mediaCommandError, runMediaCommand, seekTo, calibrate } = media;
   const {
     clipboardHistory,
     copyClipboardHistoryItem,
@@ -116,20 +114,6 @@ export function IslandPages({
           <MessagesPanel qqMail={qqMail} qqNotifications={qqNotifications} wechatReminders={wechatReminders} source={messageSource} enabledSources={features} onSourceChange={openMessages} onOpenMailSettings={() => openSettingsWindow("mail")} />
         </div>
       )}
-      {page === "music" && (
-        <MusicPlayerPanel
-          mediaState={mediaState}
-          isTrackChanging={isMediaTrackChanging}
-          commandError={mediaCommandError}
-          onOpenSettings={() => openSettingsWindow("music")}
-          onPlayPause={() => void runMediaCommand("media_play_pause")}
-          onNext={() => void runMediaCommand("media_next")}
-          onPrevious={() => void runMediaCommand("media_previous")}
-          onSeek={(positionMs) => void seekTo(positionMs)}
-          onCalibrate={calibrate}
-          lyricsSettings={settings}
-        />
-      )}
       {page === "clipboard" && (
         <ClipboardHistoryPanel
           snapshot={clipboardHistory}
@@ -143,7 +127,11 @@ export function IslandPages({
       {page === "agents" && <AgentSessionsPanel sessions={agentSessions} view={settings.agentSessionView} sort={settings.agentSessionSort} group={settings.agentSessionGroup} archiveMotion={settings.agentArchiveMotion} cardEffects={settings.agentCardEffects} hostDisplay={settings.agentHostDisplay} showElapsed={settings.agentShowElapsed} showModel={settings.agentShowModel} showActivity={settings.agentShowActivity} unseen={unseenAgentSessions} removal={agentRemoval} reveal={alertedSession} showUsage={settings.agentShowUsage} usages={agentUsages} approvals={agentApprovals} />}
       {page === "translation" && <TranslationPanel isOpen={mode === "expanded"} onOpenSettings={() => openSettingsWindow("translation")} />}
       {page === "shelf" && <FileShelfPanel shelf={fileShelf} isDropTarget={isShelfDropping} revealOnDoubleClick={settings.shelfDoubleClick === "reveal"} />}
-      {page === "trade" && <TradeToolsPanel isOpen={mode === "expanded"} />}
+      {page === "trade" && (
+        <div className="trade-page">
+          <TradeToolsPanel isOpen={mode === "expanded"} onContentHeight={onTradeHeight} />
+        </div>
+      )}
       {page === "todo" && (
         <TodoNotebook
           {...notebookProps}

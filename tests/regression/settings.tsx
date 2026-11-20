@@ -259,23 +259,6 @@ if (!automated) {
     const approvalSwitch = agentRow("在岛上允许或拒绝 Agent 的操作")?.querySelector<HTMLInputElement>("[role='switch']");
     check(approvalSwitch && !approvalSwitch.checked, "Approving on the island sits on the sessions page, off by default");
 
-    // Settings → Music → Player order: the saved order, new players added after it, each one's
-    // state, and moving a row saves the old format.
-    await openPage("music"); await act(async () => { await new Promise(resolve => setTimeout(resolve, 50)); });
-    check(document.querySelector(".editor-panel")?.textContent?.includes("播放器兼容性") &&
-      document.querySelector(".editor-panel")?.textContent?.includes("21.10.2962.0") &&
-      document.querySelector(".editor-panel")?.textContent?.includes("网易云需要安装进度插件"), "Music settings lists detected players and compatibility status using settings rows");
-    const players = () => [...document.querySelectorAll<HTMLElement>(".reorder-list__item")].map((row) => row.querySelector(".reorder-list__name")?.textContent);
-    const hints = [...document.querySelectorAll<HTMLElement>(".reorder-list__hint")].map((hint) => hint.textContent);
-    check(players().join() === "Spotify,QQ音乐,网易云音乐" && hints.join() === "没有打开,已打开,正在播放",
-      `The Music page lists the saved player order, then newly seen players, with their state (${players().join()} / ${hints.join()})`);
-    await act(async () => {
-      document.querySelectorAll<HTMLElement>(".reorder-list__handle")[2].dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp", bubbles: true }));
-    });
-    const savedPlayers = JSON.parse(localStorage.getItem("focusd-island-music-sources") ?? "[]") as { id: string; label: string }[];
-    check(players().join() === "Spotify,网易云音乐,QQ音乐" && savedPlayers.map((source) => source.id).join() === "Spotify.exe,cloudmusic.exe,QQMusic"
-      && savedPlayers[1].label === "网易云音乐", "Moving a player saves the order in the same key and format");
-
     // Shortcuts: the recorder reads the physical key (Shift+1 gives "!" and Chinese input
     // gives "Process"), and another part of the page saving later keeps the new keys.
     // In the app, clicking into a window that was not active makes WebView2 put the focus
@@ -344,23 +327,10 @@ if (!automated) {
     await openPage("about");
     check(!document.querySelector(".settings-sidebar__dot, .community-group__dot") && localStorage.getItem("focusd-island-community-invite-seen") === "true",
       "One click on About clears the red dots for good");
-    const linkCard = [...document.querySelectorAll<HTMLElement>(".settings-group__card")].find((card) => card.querySelector(".project-link"));
-    const linkTitles = [...(linkCard?.querySelectorAll<HTMLElement>(".project-link__copy strong") ?? [])].map((title) => title.textContent);
-    check(linkTitles.join() === "觉得小岛还不错？,打赏作者", `About lists the community group, the star and the tip in one group (${linkTitles.join()})`);
-    const authorLink = document.querySelector<HTMLAnchorElement>(".settings-sidebar a.settings-sidebar__item--link");
+    // Trade edition: no star row, no tip codes, no author link — About is identity, updates and logs.
+    check(!document.querySelector(".project-link, .support-author, .community-group"), "Trade edition About has no star, tip or community rows");
     const sidebarItems = [...document.querySelectorAll<HTMLElement>(".settings-sidebar__item")].map((item) => item.textContent);
-    check(authorLink?.href === "https://github.com/Alonzo-G" && sidebarItems.slice(-2).join() === "关于,关于作者", "关于作者是侧栏里关于下面的一项，直接打开 GitHub");
-    check(!document.querySelector(".community-group"), "Trade edition hides the community group (no QR URL)");
-    const supportToggle = element<HTMLButtonElement>(".support-author:not(.community-group) .support-author__toggle");
-    check(supportToggle.getAttribute("aria-expanded") === "false" && !document.querySelector(".support-author__code"), "Support the author starts closed");
-    await act(async () => { supportToggle.click(); });
-    const codes = [...document.querySelectorAll<HTMLElement>(".support-author__code")];
-    check(supportToggle.getAttribute("aria-expanded") === "true"
-      && codes.map((code) => code.querySelector("figcaption")?.textContent).join() === "微信,支付宝"
-      && codes.every((code) => code.querySelector("img")?.getAttribute("src")?.includes("/assets/donate/")),
-      "Clicking Support the author shows the WeChat and Alipay codes bundled with the app");
-    await act(async () => { supportToggle.click(); });
-    check(!document.querySelector(".support-author__code"), "Clicking it again closes the codes");
+    check(!sidebarItems.some((item) => item?.includes("关于作者")), "Trade edition sidebar has no author link");
     const aboutLink = (label: string) =>
       [...document.querySelectorAll<HTMLButtonElement>(".settings-link-button")].find((button) => button.textContent === label);
     await act(async () => { aboutLink("退出")!.click(); });

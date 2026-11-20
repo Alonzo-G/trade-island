@@ -1,6 +1,6 @@
 import { messagePanelHeight, type MessageView } from "../../features/messages/Messages";
 import type { TodoItem, TodoPageMode } from "../../features/todos/types";
-import { BASE_EXPANDED_ISLAND_HEIGHT, DAILY_NOTE_EXPANDED_ISLAND_HEIGHT, MUSIC_EXPANDED_ISLAND_HEIGHT, TODO_ARCHIVE_EXPANDED_ISLAND_HEIGHT, TODO_CALENDAR_EXPANDED_ISLAND_HEIGHT, TODO_GROW_START_ROWS, TODO_ROW_HEIGHT, getAgentAlertExpandedHeight, getAgentPageExpandedHeight, getClipboardExpandedHeight, getTodoScrollStartRows, getTodoVisualRows } from "./layout";
+import { BASE_EXPANDED_ISLAND_HEIGHT, DAILY_NOTE_EXPANDED_ISLAND_HEIGHT, TODO_ARCHIVE_EXPANDED_ISLAND_HEIGHT, TODO_CALENDAR_EXPANDED_ISLAND_HEIGHT, TODO_GROW_START_ROWS, TODO_ROW_HEIGHT, getAgentAlertExpandedHeight, getAgentPageExpandedHeight, getClipboardExpandedHeight, getTodoScrollStartRows, getTodoVisualRows } from "./layout";
 import type { AgentSessionView } from "../../features/appearance/types";
 import { getShelfLayout } from "../../features/file-shelf/fileShelf";
 import type { IslandPage } from "./types";
@@ -29,7 +29,7 @@ export function getShelfExpandedHeight(items: number) {
 // Header, direction bar, a few lines of source, the result and the action row.
 const TRANSLATION_EXPANDED_ISLAND_HEIGHT = 420;
 // Trade tools: 4 clock rows + 4 rate rows with headings and paddings; rows are fixed-height.
-const TRADE_EXPANDED_ISLAND_HEIGHT = 420;
+const TRADE_EXPANDED_ISLAND_HEIGHT = 560;
 // Settings fit their open page (useSettingsPageHeight): the island's padding, header and gap
 // around it, between a floor that keeps short pages from looking cramped and about the tallest
 // island the window allows, past which the page scrolls. The fallback before the first measure.
@@ -50,7 +50,6 @@ type ExpandedHeightInput = {
   todos: TodoItem[];
   /** Actual row heights, including the inline duration picker and time-up actions. */
   todoListHeight?: number | null;
-  hasMediaCommandError: boolean;
   messageSource: MessageView;
   isReadingMail: boolean;
   maxPanelHeight: number;
@@ -67,6 +66,7 @@ type ExpandedHeightInput = {
   agentAlertRowHeight?: number;
   /** The height the open settings page needs, or null before it is measured. */
   settingsContentHeight?: number | null;
+  tradeContentHeight?: number | null;
   /** Entries on the file shelf; its page fits their rows of tiles. */
   shelfItems?: number;
 };
@@ -82,7 +82,6 @@ export function getExpandedIslandHeight({
   todoPageMode,
   todos,
   todoListHeight = null,
-  hasMediaCommandError,
   messageSource,
   isReadingMail,
   maxPanelHeight,
@@ -125,14 +124,14 @@ export function getExpandedIslandHeight({
       : Math.min(todoListMax, BASE_EXPANDED_ISLAND_HEIGHT + (todoListHeight === null
         ? Math.max(0, visibleTodoRows - TODO_GROW_START_ROWS) * TODO_ROW_HEIGHT
         : Math.max(0, todoListHeight - (TODO_GROW_START_ROWS * TODO_ROW_HEIGHT - 6))))
-    : page === "music"
-      ? MUSIC_EXPANDED_ISLAND_HEIGHT + (hasMediaCommandError ? 24 : 0)
-      : page === "shelf"
+    : page === "shelf"
         ? Math.min(getShelfExpandedHeight(shelfItems), maxPanelHeight)
       : page === "translation"
         ? Math.min(TRANSLATION_EXPANDED_ISLAND_HEIGHT, maxPanelHeight)
+      // The trade page is one tall scrolling panel; it ignores the panel height limit that
+      // protects the older, non-scrolling pages.
       : page === "trade"
-        ? Math.min(TRADE_EXPANDED_ISLAND_HEIGHT, maxPanelHeight)
+        ? TRADE_EXPANDED_ISLAND_HEIGHT
       : page === "agents"
         ? agentAlertRowHeight !== undefined
           ? getAgentAlertExpandedHeight(agentAlertRowHeight)

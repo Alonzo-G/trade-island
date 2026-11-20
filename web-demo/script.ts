@@ -7,7 +7,7 @@ import type { DemoContent } from "./demoData";
 
 export const PAGE_BUTTONS: Record<IslandPage, string> = {
   todo: ".dot-button--todo",
-  music: ".dot-button--music",
+  trade: ".dot-button--trade",
   clipboard: ".dot-button--clipboard",
   shelf: ".dot-button--shelf",
   // A page button since messages joined the page row; the header button before that.
@@ -15,7 +15,6 @@ export const PAGE_BUTTONS: Record<IslandPage, string> = {
   // A page capsule since the translate button became one; the header button before that.
   translation: ".dot-button--translation, .island-translate-button",
   agents: ".island__agent-button",
-  trade: ".dot-button--trade",
   settings: ".island-settings-button",
 };
 
@@ -77,9 +76,9 @@ export const segments: Segment[] = [
     },
   },
   {
-    page: "music",
+    page: "trade",
     async run(actor) {
-      await enter(actor, "music");
+      await enter(actor, "trade");
       await actor.rest();
       await actor.wait(1250);
       await actor.click(".music-control-button--primary");

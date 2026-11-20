@@ -6,7 +6,6 @@ import { AgentSettingsPage } from "./AgentSettingsPage";
 import { AgentConnectSettingsPage } from "./AgentConnectSettingsPage";
 import { ClipboardSettingsPage } from "./ClipboardSettingsPage";
 import { LayoutEditor } from "./LayoutEditor";
-import { MusicSettingsPage } from "./MusicSettingsPage";
 import { MessagesSettingsPage } from "./MessagesSettingsPage";
 import { PluginsSettingsPage } from "./PluginsSettingsPage";
 import { SETTINGS_FOCUS_STORAGE_KEY, takeFocusRequest, requestPanelPreview } from "./storage";
@@ -61,7 +60,6 @@ export function SettingsPanel({
     const section = takeFocusRequest();
     if (section === "savePath") focusSavePath();
     if (section === "translation") setCategory("translation");
-    if (section === "music") setCategory("music");
     if (section === "mail") setCategory("messages");
     if (section === "updates") setCategory("about");
   }, [focusSavePath]);
@@ -113,7 +111,6 @@ export function SettingsPanel({
       )}
       {category === "translation" && <TranslationSettingsPage settings={settings} onSettingsChange={setSettings} />}
       {category === "clipboard" && <ClipboardSettingsPage settings={settings} onSettingsChange={setSettings} />}
-      {category === "music" && <MusicSettingsPage settings={settings} onSettingsChange={setSettings} />}
       {category === "agents" && <AgentSettingsPage settings={settings} onSettingsChange={setSettings} onOpenConnect={() => setCategory("agentConnect")} />}
       {category === "agentConnect" && <AgentConnectSettingsPage />}
       {category === "plugins" && <PluginsSettingsPage settings={settings} onSettingsChange={setSettings} />}

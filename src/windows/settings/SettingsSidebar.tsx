@@ -1,8 +1,5 @@
 import { useEffect, useRef } from "react";
-import { ArrowUpRight, ClipboardList, Info, Languages, ListTodo, MessageCircle, MessagesSquare, Music, Palette, Plug, Puzzle, SlidersHorizontal, UserRound, type LucideIcon } from "lucide-react";
-import { isTauri } from "@tauri-apps/api/core";
-import { openUrl } from "@tauri-apps/plugin-opener";
-import { PROJECT_AUTHOR_URL } from "../../features/updater/projectLinks";
+import { ClipboardList, Info, Languages, ListTodo, MessageCircle, MessagesSquare, Palette, Plug, Puzzle, SlidersHorizontal, type LucideIcon } from "lucide-react";
 import { useCommunityInvite } from "../../features/updater/useCommunityInvite";
 import { useTranslation } from "../../i18n";
 import { SETTINGS_GROUPS, type SettingsCategory } from "./categories";
@@ -13,7 +10,6 @@ const CATEGORY_ICONS: Record<SettingsCategory, LucideIcon> = {
   appearance: Palette,
   messages: MessageCircle,
   todos: ListTodo,
-  music: Music,
   clipboard: ClipboardList,
   translation: Languages,
   agents: MessagesSquare,
@@ -79,21 +75,6 @@ export function SettingsSidebar({
           >
             <ul>
               {group.categories.map(item)}
-              {group.label === null && (
-                // 不是设置页：点一下直接用系统浏览器打开作者的网站。
-                <li>
-                  <a className="settings-sidebar__item settings-sidebar__item--link" href={PROJECT_AUTHOR_URL} target="_blank" rel="noreferrer"
-                    onClick={(event) => {
-                      if (!isTauri()) return;
-                      event.preventDefault();
-                      void openUrl(PROJECT_AUTHOR_URL).catch((error) => console.error("Failed to open the author's site", error));
-                    }}>
-                    <UserRound size={16} strokeWidth={1.5} absoluteStrokeWidth aria-hidden="true" />
-                    <span>{t.settings.project.author}</span>
-                    <ArrowUpRight className="settings-sidebar__external" size={13} strokeWidth={1.5} absoluteStrokeWidth aria-hidden="true" />
-                  </a>
-                </li>
-              )}
             </ul>
           </section>
         ))}

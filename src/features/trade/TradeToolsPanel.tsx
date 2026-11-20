@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { useTranslation } from "../../i18n";
 import { Moon, RefreshCw, Sun } from "lucide-react";
 import { useWorldClock } from "../world-clock/useWorldClock";
@@ -11,14 +12,27 @@ import "./TradeToolsPanel.css";
  * The trade tools page (trade edition): customer time zones with a "good to message" state,
  * and today's USD rates. One page, two sections; more trade tools join below over time.
  */
-export function TradeToolsPanel({ isOpen }: { isOpen: boolean }) {
+export function TradeToolsPanel({ isOpen, onContentHeight }: { isOpen: boolean; onContentHeight?: (height: number) => void }) {
   const t = useTranslation();
+  const panelRef = useRef<HTMLElement | null>(null);
+
+  // The island grows to the panel's content height (one report per layout change); the CSS
+  // max-height keeps it inside the island while the native height follows.
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (!panel || !onContentHeight) return;
+    const report = () => onContentHeight(panel.scrollHeight);
+    report();
+    const observer = new ResizeObserver(report);
+    observer.observe(panel);
+    return () => observer.disconnect();
+  }, [onContentHeight]);
   const { views } = useWorldClock(isOpen);
   const { snapshot: fx, loading, error, refresh } = useFxRates(isOpen);
   const updated = fx.fetchedAt ? new Date(fx.fetchedAt) : null;
 
   return (
-    <section className="trade-panel" aria-label={t.trade.panelLabel}>
+    <section ref={panelRef} className="trade-panel" aria-label={t.trade.panelLabel}>
       <div className="trade-panel__section" role="group" aria-label={t.trade.clockLabel}>
         <h2 className="trade-panel__heading">{t.trade.clockLabel}</h2>
         <div className="trade-clock__list">

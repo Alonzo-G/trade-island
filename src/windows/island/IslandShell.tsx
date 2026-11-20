@@ -4,7 +4,6 @@ import type { AgentSession } from "../../features/agent-status/session";
 import type { QuotaAlert } from "../../features/agent-status/quotaAlerts";
 import type { AgentVisualState } from "../../features/agent-status/status";
 import type { CollapsedItem, CollapsedSlot, IslandShape, Material, PageButtonStyle, PageDot, TuckStyle } from "../../features/appearance/types";
-import type { MediaState } from "../../features/media/api";
 import type { MessagePreview, MessageSource } from "../../features/messages/messagePreview";
 import type { MailController } from "../../features/messages/mail/MailPanel";
 import type { QQNotificationsController } from "../../features/messages/qq-notifications/QQNotifications";
@@ -18,7 +17,6 @@ import { useGlassPointer } from "./useGlassPointer";
 import { useIslandPreparing } from "./useIslandPreparing";
 import { useMotionLayer } from "./useMotionLayer";
 import { usePageFadeIn } from "./usePageFadeIn";
-import type { LyricsSettings } from "../../features/media/lyrics/useLyrics";
 import type { TodoTimer } from "../../features/todos/timer";
 import type { TodoRotationDisplay } from "./CollapsedTodoContent";
 import type { NoticeSize } from "./noticeLayout";
@@ -62,9 +60,7 @@ type IslandShellProps = {
   collapsedItem: CollapsedItem | null;
   collapsedLayout: readonly CollapsedSlot[];
   /** The playing song's cover for the collapsed island, or null when it is not shown. */
-  collapsedCover: string | null;
   /** Where the collapsed island's lyric line comes from. */
-  lyricsSettings: LyricsSettings & { lyricsOffsetMs: number };
   /** Order of the header's page dots, and saving a new one after a drag. */
   pageOrder: PageDot[];
   pageButtonStyle: PageButtonStyle;
@@ -73,7 +69,6 @@ type IslandShellProps = {
   agentSession: AgentSession | null;
   /** Agent sessions still working, shown in place of the tuck dot while the AI Agent switch is on. */
   activeAgentSessionCount: number;
-  mediaState: MediaState;
   agentVisualState: AgentVisualState;
   agentStatusLabel: string;
   /** Modules switched on; the header and collapsed bar hide the rest. */
@@ -126,14 +121,11 @@ export function IslandShell({
   collapsedTodoCount,
   collapsedItem,
   collapsedLayout,
-  collapsedCover,
-  lyricsSettings,
   pageOrder,
   pageButtonStyle,
   onPageOrderChange,
   agentSession,
   activeAgentSessionCount,
-  mediaState,
   agentVisualState,
   agentStatusLabel,
   features,
@@ -241,12 +233,8 @@ export function IslandShell({
           collapsedTodoCount={collapsedTodoCount}
           collapsedItem={collapsedItem}
           collapsedLayout={collapsedLayout}
-          collapsedCover={collapsedCover}
-          lyricsSettings={lyricsSettings}
           agentSession={agentSession}
           agentSessionCount={features.agents ? activeAgentSessionCount : null}
-          mediaState={mediaState}
-          showMusic={features.music}
           shelfCount={shelfCount}
           quotaAlert={quotaAlert}
           agentVisualState={agentVisualState}

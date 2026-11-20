@@ -27,7 +27,7 @@ function Harness() {
   const settings = { ...DEFAULT_SETTINGS, autoTuck: idle, autoCollapseSeconds: 0, tuckDelaySeconds: 3, gameAutoTuck: true };
   const game = useGameMode(settings, nav);
   useIslandTucking({ settings, navigation: nav, hasMessagePreview: message,
-    activity: { agentVisualState: "idle", collapsedItem: null, songPlaying: false, activeTodoId: null, timer: null },
+    activity: { agentVisualState: "idle", collapsedItem: null, activeTodoId: null, timer: null },
     gameHolds: game.quiet || game.tuck });
   usePanelPreview({ navigation: nav, quiet: game.quiet, hasMessagePreview: message });
   return <div className="island">{nav.mode}/{String(nav.isTucked)}/{String(nav.isPreviewing)}</div>;
@@ -71,10 +71,10 @@ try {
   await wait(2700);
   check(state() === "collapsed/out" && !navigation.isPreviewing, "Repeated mixed previews restore the first state");
 
-  await act(async () => navigation.openIslandPage("music"));
+  await act(async () => navigation.openIslandPage("trade"));
   await request("tucked");
   await wait(2700);
-  check(state() === "expanded/out" && navigation.page === "music", "Tucked preview restores an open panel and its page");
+  check(state() === "expanded/out" && navigation.page === "trade", "Tucked preview restores an open panel and its page");
   await act(async () => navigation.minimizeToEdge());
   await request("collapsed");
   await wait(2700);
@@ -89,10 +89,10 @@ try {
   await request("tucked");
   await act(async () => {
     document.querySelector(".island")!.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true })); window.dispatchEvent(new PointerEvent("pointerup", { bubbles: true }));
-    navigation.openIslandPage("music");
+    navigation.openIslandPage("trade");
   });
   await wait(2700);
-  check(state() === "expanded/out" && navigation.page === "music", "A click during preview keeps the user's new navigation");
+  check(state() === "expanded/out" && navigation.page === "trade", "A click during preview keeps the user's new navigation");
 
   await fullscreen(true);
   await request("expanded");

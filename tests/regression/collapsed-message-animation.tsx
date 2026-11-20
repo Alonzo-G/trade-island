@@ -15,20 +15,11 @@ import { useWeChatReminders } from "../../src/features/messages/wechat/WeChatRem
 import { useMail } from "../../src/features/messages/mail/MailPanel";
 import type { MailSnapshot } from "../../src/features/messages/mail/api";
 import type { MessageSource } from "../../src/features/messages/messagePreview";
-import type { MediaState } from "../../src/features/media/api";
 import type { AgentSession } from "../../src/features/agent-status/session";
 import { MAIL_OTP_ENABLED } from "../../src/features/releaseFlags.ts";
 
 Object.assign(globalThis, { isTauri: true, IS_REACT_ACT_ENVIRONMENT: true });
 const automated = new URLSearchParams(location.search).has("test");
-// Same values as MediaState::empty() in src-tauri/src/media_control/session.rs.
-const UNAVAILABLE_MEDIA: MediaState = {
-  available: false, audioActive: false, audioPeak: 0, playbackStatus: "unavailable",
-  title: null, artist: null, album: null, thumbnail: null, positionMs: 0, durationMs: 0,
-  canSeek: false, canNext: false, canPrevious: false, shuffleActive: null, canShuffle: false,
-  repeatMode: "unknown", canRepeat: false, volume: -1, sourceApp: null, activeSessionId: null,
-  sessions: [], updatedAt: 0,
-};
 async function update(action: () => void | Promise<void>) {
   if (automated) await act(action);
   else await action();
@@ -111,12 +102,11 @@ function Fixture() {
     <IslandShell qqNotifications={qq} wechatReminders={wechat} qqMail={qqMail} preview={preview} notice={notice}
       mode={mode} page="todo" expandedHeight={306} isTucked={tucked} tuckStyle="edge" topEdgeShoulders={false} positionLocked={false} isDetached={true} showTitle={title}
       showCollapsedText={true} collapsedTaskTitle={task ?? `剩余${count}个待办`} collapsedTodoCount={null} agentSession={agent} activeAgentSessionCount={agentCount}
-      collapsedItem={agent ? "agent" : "todo"} collapsedLayout={["text", "mail", "shelf", "music", "agents"]} collapsedCover={null} lyricsSettings={{ lyricsFolder: "", lyricsOnline: false, lyricsOffsetMs: 0 }}
-      pageOrder={["todo", "music", "clipboard", "shelf"]} onPageOrderChange={() => {}}
+      collapsedItem={agent ? "agent" : "todo"} collapsedLayout={["text", "mail", "shelf", "agents"]}
+      pageOrder={["todo", "clipboard", "shelf"]} onPageOrderChange={() => {}}
       pageButtonStyle="capsule"
       material="classic" nativeGlassState="disabled" agentVisualState="idle" agentStatusLabel="AI Agent 空闲或已完成"
-      mediaState={UNAVAILABLE_MEDIA}
-      features={{ todo: true, music: true, clipboard: true, shelf: true, qq: true, wechat: true, qqMail: true, agents: agentsEnabled, translation: false, trade: false }}
+      features={{ todo: true, clipboard: true, shelf: true, qq: true, wechat: true, qqMail: true, agents: agentsEnabled, translation: false, trade: false }}
       shelfCount={null}
       onOpenPage={(page) => { openedPage = page; }} onOpenMessages={(source) => { openedPage = source; }}
       onPageChange={() => {}} onWindowDragStart={() => {}} onCollapse={() => setMode("collapsed")}

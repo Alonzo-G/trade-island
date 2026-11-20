@@ -58,8 +58,8 @@ function Fixture() {
   const state = useSyncExternalStore(subscribeToUpdate, getUpdateState);
   const visibleTodo = syncUpdateTodo([], { ...state, hasVersion: state.nextVersion !== "" }, "Update").length > 0;
   return <>
-    <IslandHeader isExpanded={expanded} page={page} features={{ todo: true, music: true, clipboard: true, shelf: true,
-      agents: true, translation: true, qq: true, wechat: true, qqMail: true, trade: true }} pageOrder={["todo", "music", "clipboard", "shelf", "translation"]}
+    <IslandHeader isExpanded={expanded} page={page} features={{ todo: true, clipboard: true, shelf: true,
+      agents: true, translation: true, qq: true, wechat: true, qqMail: true, trade: true }} pageOrder={["todo", "clipboard", "shelf", "translation", "trade"]}
       pageButtonStyle={style} onPageOrderChange={() => {}} showTitle={false} isDetached={false} agentVisualState="idle"
       agentStatusLabel="Agent" qqNotificationCount={0} wechatPending={false} officePending={null} onPageChange={changePage} onCollapse={() => changeExpanded(false)}
       onOpenSettings={() => {}} onOpenMessages={() => {}} onOpenTranslator={() => {}} onResetPosition={() => {}}
@@ -80,7 +80,7 @@ try {
   await act(async () => root.render(<StrictMode><I18nProvider><Fixture /></I18nProvider></StrictMode>));
   await update({});
   check(dot(), "A pending update shows the header red dot");
-  await act(async () => { setPage("music"); setExpanded(true); });
+  await act(async () => { setPage("trade"); setExpanded(true); });
   for (const style of ["icon", "capsule"] as const) {
     await act(async () => setStyle(style));
     const badge = dot()!;
@@ -100,7 +100,7 @@ try {
   const badgeCss = getComputedStyle(document.querySelector(".todo-update-dot")!);
   check(badgeCss.width === "5px" && badgeCss.height === "5px" && badgeCss.boxShadow === "none" && badgeCss.borderWidth === "0px"
     && action().getAttribute("aria-label")?.includes(en ? "Update available" : "有新版本"), "Clickable update action has a 5px dot and announcement");
-  await act(async () => setPage("music"));
+  await act(async () => setPage("trade"));
   check(dot(), "The header dot stays on other pages while the update is pending");
   await update({ nextVersion: "3.0.11", stage: "downloading" });
   check(dot(), "A later version shows the page hint while downloading");
@@ -115,7 +115,7 @@ try {
   check(installs === 1, "Click sends the existing install request");
   await update({ stage: "installing" });
   check(!document.querySelector(".todo-update-dot"), "Entering installation removes the action dot");
-  await act(async () => setPage("music"));
+  await act(async () => setPage("trade"));
   await act(async () => root.unmount());
   const nextRoot = createRoot(document.getElementById("fixture")!);
   await act(async () => nextRoot.render(<StrictMode><I18nProvider><Fixture /></I18nProvider></StrictMode>));

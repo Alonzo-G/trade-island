@@ -6,7 +6,6 @@ import markUrl from "../../../src-tauri/icons/mark.svg";
 import { COMMUNITY_GROUP_QR_URL } from "./projectLinks";
 import { CommunityGroup } from "./CommunityGroup";
 import { ProjectLink } from "./ProjectLink";
-import { SupportAuthor } from "./SupportAuthor";
 import { PROJECT_REPO_URL } from "./projectLinks";
 import { getUpdateState, subscribeToUpdate } from "./updaterController";
 import "./ProjectSettingsSection.css";
@@ -51,7 +50,6 @@ export function ProjectLinksSection() {
         hint={text.starHint}
         icon={<Star className="project-link__icon" size={18} strokeWidth={1.5} absoluteStrokeWidth aria-hidden="true" />}
       />
-      <SupportAuthor />
     </SettingsGroup>
   );
 }

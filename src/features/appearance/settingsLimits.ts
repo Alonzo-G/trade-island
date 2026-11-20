@@ -86,11 +86,11 @@ export function normalizeExpandedScale(value: unknown) {
 }
 
 /** The collapsed island's items, in their default order: a running agent, then lyrics, then todos. */
-export const COLLAPSED_ITEMS: readonly CollapsedItem[] = ["agent", "lyrics", "todo"];
+export const COLLAPSED_ITEMS: readonly CollapsedItem[] = ["agent", "todo"];
 /** The collapsed island's layout as it always was: the text, then the icons on its right. */
-export const COLLAPSED_SLOTS: readonly CollapsedSlot[] = ["text", "mail", "shelf", "music", "agents"];
+export const COLLAPSED_SLOTS: readonly CollapsedSlot[] = ["text", "mail", "shelf", "agents"];
 /** The header's page dots in their default order; translation joined last (2026-11-11). */
-export const PAGE_DOTS: readonly PageDot[] = ["todo", "music", "clipboard", "shelf", "translation", "trade"];
+export const PAGE_DOTS: readonly PageDot[] = ["todo", "clipboard", "shelf", "translation", "trade"];
 
 /** `value` when it is one of `allowed`, else `fallback`: a saved choice from an older or newer build. */
 export function oneOf<T>(allowed: readonly T[], value: unknown, fallback: T): T {

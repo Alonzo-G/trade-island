@@ -45,16 +45,16 @@ export type AgentAlertStarted = "everyTurn" | "newSession" | "off";
 /** What double-clicking a file shelf entry does. */
 export type ShelfDoubleClick = "open" | "reveal";
 /** What the collapsed island can show in its text: a running agent, the lyric line, a todo. */
-export type CollapsedItem = "agent" | "lyrics" | "todo";
+export type CollapsedItem = "agent" | "todo";
 /**
  * What sits on the collapsed island, in the order the user arranged it (Appearance → Collapsed
  * island): the text (pulse, cover and the agent, lyric or todo line) and the status icons —
  * the new-mail badge, files on the shelf, the music waveform, running Agent sessions (or the tuck
  * dot). Icons before the text sit on its left.
  */
-export type CollapsedSlot = "text" | "mail" | "shelf" | "music" | "agents";
+export type CollapsedSlot = "text" | "mail" | "shelf" | "agents";
 /** The page dots in the expanded island's header, which the user can drag into any order. */
-export type PageDot = "todo" | "music" | "clipboard" | "shelf" | "translation" | "trade";
+export type PageDot = "todo" | "clipboard" | "shelf" | "translation" | "trade";
 
 export type IslandSettings = {
   topEdgeLayoutVersion: 1;

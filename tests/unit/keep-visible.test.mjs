@@ -23,14 +23,6 @@ test("only running agents hold the island, independently of which text is displa
   }
 });
 
-test("lyrics hold the island only while visible and playing", () => {
-  const settings = { keepVisibleWhileLyrics: true };
-  const playing = { collapsedItem: "lyrics", songPlaying: true };
-  assert.equal(stays(settings, playing), true);
-  assert.equal(stays({ ...settings, showCollapsedText: false }, playing), false);
-  assert.equal(stays(settings, { ...playing, collapsedItem: "agent" }), false);
-  assert.equal(stays(settings, { ...playing, songPlaying: false }), false);
-});
 
 test("unstarted todos do not hold; Start and a running countdown do", () => {
   const settings = { keepVisibleWhileTodoRunning: true };

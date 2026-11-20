@@ -82,14 +82,14 @@ test("a stored island position is rounded and invalid data is ignored", () => {
 
 test("pages and message sources that are switched off fall back to ones still on", async () => {
   const { isPageEnabled, resolveIslandPage, resolveMessageSource } = await import("../../src/windows/island/features.ts");
-  const all = { todo: true, music: true, clipboard: true, shelf: true, qq: true, wechat: true, qqMail: true };
-  assert.equal(resolveIslandPage("music", all), "music");
-  assert.equal(resolveIslandPage("todo", { ...all, todo: false }), "music");
-  assert.equal(resolveIslandPage("todo", { ...all, todo: false, music: false, clipboard: false }), "shelf");
-  assert.equal(resolveIslandPage("todo", { ...all, todo: false, music: false, clipboard: false, shelf: false }), "qq");
+  const all = { todo: true, clipboard: true, shelf: true, qq: true, wechat: true, qqMail: true, trade: true };
+  assert.equal(resolveIslandPage("todo", all), "todo");
+  assert.equal(resolveIslandPage("todo", { ...all, todo: false }), "clipboard");
+  assert.equal(resolveIslandPage("todo", { ...all, todo: false, clipboard: false }), "shelf");
+  assert.equal(resolveIslandPage("todo", { ...all, todo: false, clipboard: false, shelf: false }), "qq");
   // The messages page stays while any one of its sources is on.
   assert.equal(isPageEnabled("qq", { ...all, qq: false, wechat: false }), true);
-  const none = { todo: false, music: false, clipboard: false, shelf: false, qq: false, wechat: false, qqMail: false };
+  const none = { todo: false, clipboard: false, shelf: false, qq: false, wechat: false, qqMail: false };
   assert.equal(isPageEnabled("qq", none), false);
   assert.equal(resolveIslandPage("todo", none), null);
   assert.equal(resolveMessageSource("qq", { ...all, qq: false }), "wechat");
@@ -104,10 +104,10 @@ test("the clipboard page fits whole rows and stays short by default", () => {
 
 test("a clipboard opened in its own window is not kept as the island's page", async () => {
   const { islandPageFor } = await import("../../src/windows/island/features.ts");
-  const all = { todo: true, music: true, clipboard: true, shelf: true, qq: true, wechat: true, qqMail: true };
+  const all = { todo: true, clipboard: true, shelf: true, qq: true, wechat: true, qqMail: true, trade: true };
   assert.equal(islandPageFor("clipboard", all, false), "clipboard");
   // Remembered clipboard page + separate window: the next click on the island opens a real page.
   assert.equal(islandPageFor("clipboard", all, true), "todo");
-  assert.equal(islandPageFor("clipboard", { ...all, todo: false, music: false }, true), "shelf");
-  assert.equal(islandPageFor("music", all, true), "music");
+  assert.equal(islandPageFor("clipboard", { ...all, todo: false, clipboard: false }, true), "shelf");
+  assert.equal(islandPageFor("trade", all, true), "trade");
 });

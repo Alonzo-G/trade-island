@@ -5,7 +5,6 @@ import { PLUGINS_ENABLED } from "../../features/releaseFlags.ts";
 /** Which modules are switched on; an off module is hidden on the island. */
 export type IslandFeatures = {
   todo: boolean;
-  music: boolean;
   clipboard: boolean;
   shelf: boolean;
   qq: boolean;
@@ -24,7 +23,7 @@ export type IslandFeatures = {
   trade: boolean;
 };
 
-const PAGE_ORDER: IslandPage[] = ["todo", "music", "clipboard", "shelf", "qq", "agents", "trade", "translation"];
+const PAGE_ORDER: IslandPage[] = ["todo", "clipboard", "shelf", "qq", "agents", "trade", "translation"];
 const SOURCE_ORDER: MessageSource[] = ["wechat", "qq", "qqMail", "dingtalk", "feishu", "wecom", "plugin"];
 
 export function isPageEnabled(page: IslandPage, features: IslandFeatures): boolean {

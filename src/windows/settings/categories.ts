@@ -3,7 +3,6 @@ const ALL_SETTINGS_CATEGORIES = [
   "general",
   "appearance",
   "todos",
-  "music",
   "translation",
   "clipboard",
   "messages",
@@ -25,7 +24,7 @@ export type SettingsGroup = "basics" | "features" | "agents";
  */
 export const SETTINGS_GROUPS: readonly { label: SettingsGroup | null; categories: readonly SettingsCategory[] }[] = [
   { label: "basics", categories: ["general", "appearance"] },
-  { label: "features", categories: ["todos", "music", "translation", "clipboard", "messages"] },
+  { label: "features", categories: ["todos", "translation", "clipboard", "messages"] },
   { label: "agents", categories: ["agents", "agentConnect"] },
   { label: null, categories: ["plugins", "about"] },
 ];
@@ -34,6 +33,7 @@ export const DEFAULT_SETTINGS_CATEGORY: SettingsCategory = "general";
 
 /** Pages that were merged into another, by their old name: what the island or a link still asks for. */
 const MERGED_CATEGORIES: Readonly<Record<string, SettingsCategory>> = {
+  music: "general",
   qq: "messages",
   wechat: "messages",
   mail: "messages",
