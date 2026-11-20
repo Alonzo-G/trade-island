@@ -1,7 +1,7 @@
 {
   "name": "trade-island",
   "private": true,
-  "version": "3.2.8-beta",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
