@@ -4,7 +4,7 @@
 import { execFileSync } from "node:child_process";
 
 // Builds are fly-island.exe; builds made before the crate was renamed are focusd-island.exe.
-const IMAGE_NAMES = ["focusd-island.exe", "fly-island.exe"];
+const IMAGE_NAMES = ["focusd-island.exe", "fly-island.exe", "trade-island.exe"];
 const EXIT_TIMEOUT_MS = 5_000;
 const POLL_INTERVAL_MS = 100;
 

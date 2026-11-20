@@ -30,14 +30,15 @@ function check(condition: unknown, label: string) {
 }
 const root = createRoot(document.getElementById("fixture")!);
 try {
-  check(!PLUGINS_ENABLED && !MAIL_OTP_ENABLED && !PLUGIN_MARKET_ENABLED, "正式构建的三个开关关闭");
-  // A beta's installs stay saved but count for nothing in a stable build.
+  // Trade edition: the plugin host and market ship ON (the community is self-managed);
+  // mail OTP stays off. Built-in installs read as installed again.
+  check(PLUGINS_ENABLED && PLUGIN_MARKET_ENABLED && !MAIL_OTP_ENABLED, "trade 版开关：插件与市场开、邮箱验证码关");
   localStorage.setItem(NATIVE_PLUGINS_KEY, JSON.stringify(["dingtalk", "zcode"]));
   await act(async () => root.render(<StrictMode><I18nProvider><Probe /></I18nProvider></StrictMode>));
   await act(async () => { await refreshPlugins(); });
-  check(calls.length === 0, "岛上挂载插件消费者不会请求宿主、索引或订阅事件");
-  check(nativeInstalled !== null && Object.values(nativeInstalled).every((installed) => !installed), "测试版装过的内置插件在正式版里都算未安装");
-  check(document.querySelector("output")?.textContent?.includes('"installed":{}'), "插件快照为空，不产生会话、额度和消息入口");
+  check(nativeInstalled !== null && nativeInstalled["dingtalk"] === true && nativeInstalled["zcode"] === true,
+    "内置插件安装记录在 trade 版里生效");
+  check(document.querySelector("output")?.textContent?.includes('"live":{}'), "插件宿主快照无运行中会话");
   const event: MailEvent = {
     snapshot: { email: "test@example.com", configured: true, enabled: true, syncing: false,
       revision: 1, status: "connected", unreadCount: 1, lastSyncedAt: Date.now(), error: null,

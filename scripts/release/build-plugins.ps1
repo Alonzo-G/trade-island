@@ -7,7 +7,7 @@ New-Item -ItemType Directory -Force -Path $output | Out-Null
 $appVersion = (Get-Content -Raw -Encoding UTF8 (Join-Path $workspace 'package.json') | ConvertFrom-Json).version
 $entries = @()
 Get-ChildItem -LiteralPath (Join-Path $workspace 'plugins') -Directory | ForEach-Object {
-    $manifestPath = Join-Path $_.FullName 'fly-island-plugin.json'
+    $manifestPath = Join-Path $_.FullName 'trade-island-plugin.json'
     if (-not (Test-Path -LiteralPath $manifestPath)) { return }
     $manifest = Get-Content -Raw -Encoding UTF8 $manifestPath | ConvertFrom-Json
     if ($manifest.id -notmatch '^[a-z][a-z0-9.-]{0,99}$' -or $manifest.id.Contains('..')) { throw 'Invalid plugin ID' }

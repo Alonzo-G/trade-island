@@ -5,7 +5,9 @@ use tauri::Emitter;
 use super::{manifest::Manifest, packages::IndexEntry, process::Worker, protocol::Contributions, storage::{self, Installed, Registry}};
 
 pub const EVENT: &str = "plugins-changed";
-const DEFAULT_INDEX: &str = "https://github.com/flyl1u/fly-island/releases/latest/download/plugins-index.json";
+/// The trade edition's own plugin index; forks point `FOCUSD_PLUGINS_INDEX` or the
+/// developer-mode setting at theirs without touching this build.
+const DEFAULT_INDEX: &str = "https://github.com/gavin/trade-island/releases/latest/download/plugins-index.json";
 
 #[derive(Clone, Default, Serialize)]
 #[serde(rename_all = "camelCase")]

@@ -38,7 +38,7 @@ export function loadSigningEnvironment(env = process.env, options = {}) {
   if (env.TAURI_UPDATER_PUBKEY?.trim() || env.TAURI_SIGNING_PRIVATE_KEY?.trim()) return { ...env };
 
   const configPath = options.configPath ?? env.FOCUSD_SIGNING_CONFIG
-    ?? join(homedir(), ".tauri", "fly-island", "release.json");
+    ?? join(homedir(), ".tauri", "trade-island", "release.json");
   if (!existsSync(configPath)) return { ...env };
   const config = JSON.parse(readFileSync(configPath, "utf8").replace(/^\uFEFF/, ""));
   if (config.schemaVersion !== 1) throw new Error("Unsupported local signing configuration version.");
