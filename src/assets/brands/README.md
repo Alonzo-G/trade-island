@@ -8,6 +8,13 @@
 | `wechat.png` | [微信 Windows](https://pc.weixin.qq.com/) | [官网 Apple Touch 图标](https://res.wx.qq.com/a/wx_fed/assets/res/OTE0YTAw.png) |
 | `qq-mail.png` | [QQ 邮箱](https://mail.qq.com/) | [官网图标](https://res.wx.qq.com/t/webmail/webmail/res/images/qqmail_favicon_96h.8d124a7.png) |
 
+以下消息雷达图标于 2026-11-20 制作，白色标记配官方品牌底色，来源为 [Simple Icons](https://github.com/simple-icons/simple-icons)（CC0）矢量标记：
+
+| 文件 | 来源 |
+| --- | --- |
+| `whatsapp.svg` | Simple Icons `whatsapp.svg`（CC0），底色为 WhatsApp 品牌绿 `#25D366` |
+| `telegram.svg` | Simple Icons `telegram.svg`（CC0），底色为 Telegram 品牌蓝 `#2AABEE` |
+
 以下 AI Agent 图标于 2026-11-04 取得，用于在小岛上标识正在运行的 Agent：
 
 | 文件 | 官网 | 原始资源 |

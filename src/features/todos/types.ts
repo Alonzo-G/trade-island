@@ -7,6 +7,12 @@ export type TodoItem = {
   createdAt: number;
   /** The update reminder, derived from the updater state and never stored. */
   kind?: "update";
+  /** Customer follow-up (trade edition): who this todo is about, shown as a tag on the row. */
+  customer?: string;
+  /** The customer's country or region, free text; kept beside the customer name. */
+  country?: string;
+  /** Follow-up cadence in days: completing the todo schedules the next one this far out. */
+  followUpDays?: number;
 };
 
 /** A todo planned for a later day; it joins that day's list when the day arrives. */

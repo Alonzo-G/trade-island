@@ -24,6 +24,7 @@ fn diagnostic_reports_never_include_chat_content() {
             title: "private-sender".into(),
             body: "private-message".into(),
             created_at: 123,
+            app_id: "qq".into(),
         }],
         ..Default::default()
     };
@@ -251,6 +252,7 @@ fn notice(id: u32, body: &str) -> QQNotification {
         title: "QQ".into(),
         body: body.into(),
         created_at: id as i64,
+        app_id: "qq".into(),
     }
 }
 #[test]
@@ -319,6 +321,7 @@ fn opening_one_contact_clears_only_that_contacts_notifications() {
         title: title.into(),
         body: "message".into(),
         created_at,
+        app_id: "qq".into(),
     };
     let mut buffer = NotificationBuffer::default();
     buffer.sync(Vec::new());

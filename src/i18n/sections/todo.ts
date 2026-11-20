@@ -25,6 +25,7 @@ export type TodoText = {
   delete: string;
   deleteTask: (taskTitle: string) => string;
   reorderTask: (taskTitle: string) => string;
+  followUpEvery: (days: number) => string;
 };
 
 export const zhCN: TodoText = {
@@ -52,6 +53,7 @@ export const zhCN: TodoText = {
   delete: "删除",
   deleteTask: (taskTitle) => `删除：${taskTitle}`,
   reorderTask: (taskTitle) => `拖动排序：${taskTitle}`,
+  followUpEvery: (days) => `${days}天跟进`, 
 };
 
 export const en: TodoText = {
@@ -79,4 +81,5 @@ export const en: TodoText = {
   delete: "Delete",
   deleteTask: (taskTitle) => `Delete: ${taskTitle}`,
   reorderTask: (taskTitle) => `Reorder: ${taskTitle}`,
+  followUpEvery: (days) => `${days}-day follow-up`,
 };

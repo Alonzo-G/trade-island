@@ -15,6 +15,7 @@ test("settings saved before providers existed keep DeepSeek and their shortcut a
     models: {},
     pasteClipboardOnOpen: true,
     autoTranslate: false,
+    tone: "plain",
   });
   assert.deepEqual(normalizeTranslationSettings(null), DEFAULT_SETTINGS);
   assert.equal(DEFAULT_SETTINGS.provider, "siliconflow");

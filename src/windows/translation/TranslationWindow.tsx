@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState, type PointerEvent } from "rea
 import { ArrowRight, Check, Clipboard, Copy, Grip, Languages, LoaderCircle, Settings2, X } from "lucide-react";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { hasTranslationSecret, hideTranslationWindow, listenTranslationWindowOpened, readTranslationClipboard, setTranslationShortcut } from "../../features/translation/api";
-import type { Direction } from "../../features/translation/storage";
+import type { Direction, TranslationTone } from "../../features/translation/storage";
 import { DEFAULT_PROVIDER_MODELS } from "../../features/translation/providers";
 import { useTranslationSettings } from "../../features/translation/useTranslationSettings";
 import { openSettingsWindow } from "../settings/api";
@@ -169,6 +169,9 @@ export function TranslationWindow() {
           <div className="translation-window__languages">
             <select id="translation-direction" aria-label={t.translator.direction} value={settings.direction} disabled={isLoading} onChange={(event) => setSettings({ ...settings, direction: event.target.value as Direction })}>
               <option value="auto">{t.translator.auto}</option><option value="zh-en">{t.translator.chinese}</option><option value="en-zh">{t.translator.english}</option>
+            </select>
+            <select id="translation-tone" aria-label={t.translator.tone} value={settings.tone} disabled={isLoading} onChange={(event) => setSettings({ ...settings, tone: event.target.value as TranslationTone })}>
+              <option value="plain">{t.translator.toneLabels.plain}</option><option value="business-formal">{t.translator.toneLabels.businessFormal}</option><option value="business-friendly">{t.translator.toneLabels.businessFriendly}</option>
             </select>
             <ArrowRight size={15} aria-hidden="true" />
             <span>{targetLanguage}</span>

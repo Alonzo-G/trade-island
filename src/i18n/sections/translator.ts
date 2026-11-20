@@ -32,6 +32,8 @@ export type TranslatorText = {
   pressShortcut: string;
   shortcutHint: string;
   direction: string;
+  tone: string;
+  toneLabels: { plain: string; businessFormal: string; businessFriendly: string };
   auto: string;
   zhEn: string;
   enZh: string;
@@ -91,6 +93,8 @@ export const zhCN: TranslatorText = {
   pressShortcut: "请按下组合键…",
   shortcutHint: "点击输入框，再按新的组合键",
   direction: "翻译方向",
+  tone: "语气",
+  toneLabels: { plain: "直译", businessFormal: "商务正式", businessFriendly: "商务友好" },
   auto: "自动识别",
   zhEn: "中文 → 英文",
   enZh: "英文 → 中文",
@@ -150,6 +154,8 @@ export const en: TranslatorText = {
   pressShortcut: "Press a key combination…",
   shortcutHint: "Click the field, then press a new key combination",
   direction: "Direction",
+  tone: "Tone",
+  toneLabels: { plain: "Literal", businessFormal: "Business formal", businessFriendly: "Business friendly" },
   auto: "Auto-detect",
   zhEn: "Chinese → English",
   enZh: "English → Chinese",

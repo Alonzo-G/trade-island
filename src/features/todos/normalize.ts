@@ -16,13 +16,24 @@ export function createTodoId() {
   return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
+const MAX_FOLLOW_UP_DAYS = 365;
+
 export function normalizeTodo(todo: Partial<TodoItem>): TodoItem {
-  return {
+  const base: TodoItem = {
     id: typeof todo.id === "string" && todo.id ? todo.id : createTodoId(),
     title: todo.title?.trim() ?? "",
     completed: Boolean(todo.completed),
     createdAt: typeof todo.createdAt === "number" ? todo.createdAt : Date.now(),
   };
+  // Trade follow-up fields are optional and only kept when valid and non-empty.
+  const customer = typeof todo.customer === "string" ? todo.customer.trim().slice(0, 60) : "";
+  const country = typeof todo.country === "string" ? todo.country.trim().slice(0, 40) : "";
+  const followUpDays = typeof todo.followUpDays === "number" && Number.isFinite(todo.followUpDays)
+    && todo.followUpDays >= 1 && todo.followUpDays <= MAX_FOLLOW_UP_DAYS ? Math.round(todo.followUpDays) : undefined;
+  if (customer) base.customer = customer;
+  if (country) base.country = country;
+  if (followUpDays !== undefined) base.followUpDays = followUpDays;
+  return base;
 }
 
 export function parseScheduledTodos(stored: string | null): ScheduledTodo[] {

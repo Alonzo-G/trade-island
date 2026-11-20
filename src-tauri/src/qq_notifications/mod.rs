@@ -35,6 +35,9 @@ pub struct QQNotification {
     title: String,
     body: String,
     created_at: i64,
+    /// Which app the toast came from ("qq", "whatsapp", "telegram", ...); the radar groups by it.
+    #[serde(default)]
+    app_id: String,
 }
 
 #[derive(Clone, Debug, PartialEq, Serialize)]

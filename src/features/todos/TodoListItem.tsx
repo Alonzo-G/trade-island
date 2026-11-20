@@ -7,6 +7,7 @@ import { isUpdateTodo } from "./updateTodo";
 import { UpdateTodoAction } from "./UpdateTodoAction";
 import { TodoTitleEditor } from "./TodoTitleEditor";
 import { TodoStartControl } from "./TodoStartControl";
+import { TodoFollowUpTag } from "./TodoFollowUpTag";
 import { TodoTimerActions } from "./TodoTimerActions";
 import { isTodoTimerEndingSoon, todoMinutes, type TodoDuration, type TodoDurations, type TodoTimer } from "./timer";
 import "./TodoListItem.css";
@@ -109,9 +110,10 @@ export function TodoListItem({
           onClick={() => onStartEdit(todo)}
         >
           {todo.title}
+          <TodoFollowUpTag todo={todo} />
         </button>
       ) : (
-        <span className="todo-title">{todo.title}</span>
+        <span className="todo-title">{todo.title}<TodoFollowUpTag todo={todo} /></span>
       )}
       {isTodayMode && (
         <>

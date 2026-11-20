@@ -5,6 +5,8 @@ import type { TodoTimer } from "./timer";
 import { useTodoArchives } from "./useTodoArchives";
 import { useTodoList } from "./useTodoList";
 import { useScheduledTodos } from "./useScheduledTodos";
+import { formatFollowUpSuffix } from "./followUp";
+import { getLocalDateString } from "../../utils/date";
 import { useTodoRollover } from "./useTodoRollover";
 import { useTodoSaving } from "./useTodoSaving";
 
@@ -63,6 +65,23 @@ export function useTodos({
     }
     setDraftDate(null);
   }, [addListTodo, currentTodoDate, draftDate, draftTodo, scheduleTodo, setDraftTodo]);
+
+  // Completing a follow-up todo (trade edition) schedules the next round `followUpDays` out,
+  // carrying the customer fields so the cycle continues without retyping anything.
+  const toggleTodoWithFollowUp = useCallback(
+    (id: string) => {
+      const todo = todos.find((item) => item.id === id);
+      const willComplete = todo ? !todo.completed : false;
+      list.toggleTodo(id);
+      if (willComplete && todo?.followUpDays) {
+        const next = new Date();
+        next.setDate(next.getDate() + todo.followUpDays);
+        const title = formatFollowUpSuffix({ title: todo.title, customer: todo.customer, country: todo.country, followUpDays: todo.followUpDays });
+        scheduleTodo(title, getLocalDateString(next));
+      }
+    },
+    [list, scheduleTodo, todos],
+  );
   const { saveDirectory, saveState, saveTodosToDisk, saveTodayTodos } =
     useTodoSaving({
       currentTodoDate,
@@ -162,7 +181,7 @@ export function useTodos({
       onShowCalendar: showCalendar,
       onAddTodoForDay: addTodoForDay,
       onDeleteScheduledTodo: deleteScheduledTodo,
-      onToggleTodo: list.toggleTodo,
+      onToggleTodo: toggleTodoWithFollowUp,
       onUpdateTodo: list.updateTodoTitle,
       onStartTodo: list.startTodo,
       onDeleteTodo: list.deleteTodo,

@@ -24,6 +24,19 @@ use crate::win32;
 
 const QQ_APP_ID: &str = "QQ";
 
+/// Apps whose toasts the radar reads, beyond QQ: each entry maps the app's user model id to the
+/// short `app_id` the snapshot carries (and the frontend groups and icons by).
+/// Windows desktop apps toast under their own AUMID; these are the ids WhatsApp and the two
+/// Telegram clients register under. Adding a source is one line here.
+const RADAR_APP_IDS: &[(&str, &str)] = &[
+    ("QQ", "qq"),
+    ("WhatsApp", "whatsapp"),
+    // WhatsApp's store app registers under the Meta publisher id.
+    ("5319275A.WhatsAppDesktop_gvj1dg7yc31ny!App", "whatsapp"),
+    ("TelegramDesktop", "telegram"),
+    ("Telegram.TelegramDesktop_790jt81ex68mg!TelegramDesktop", "telegram"),
+];
+
 const REGISTRATION_REPAIR: &str =
     include_str!("repair-qq-notification-registration.ps1");
 
@@ -268,9 +281,17 @@ pub(super) fn read_notifications() -> Result<(NotificationStatus, Vec<QQNotifica
 fn read_qq_notification(
     notification: &UserNotification,
 ) -> windows::core::Result<Option<QQNotification>> {
-    if notification.AppInfo()?.AppUserModelId()? != QQ_APP_ID {
-        return Ok(None);
-    }
+    let app_user_model_id = notification.AppInfo()?.AppUserModelId()?.to_string_lossy();
+    let app_id = RADAR_APP_IDS.iter()
+        .find(|(candidate, _)| app_user_model_id == *candidate || app_user_model_id.starts_with(candidate))
+        .map(|(_, short)| short.to_string());
+    // QQ keeps its exact id match; other radar apps match by prefix (suffixes vary by install).
+    let app_id = if app_id.is_none() && app_user_model_id == QQ_APP_ID {
+        Some("qq".to_string())
+    } else {
+        app_id
+    };
+    let Some(app_id) = app_id else { return Ok(None); };
     let id = notification.Id()?;
     let ticks = notification.CreationTime()?.UniversalTime;
     let mut parts = Vec::new();
@@ -308,9 +329,10 @@ fn read_qq_notification(
         .unwrap_or_else(|| "QQ".into());
     let body = parts.iter().skip(1).cloned().collect::<Vec<_>>().join("\n");
     Ok(Some(QQNotification {
-        id: format!("QQ:{id}:{ticks}"),
+        id: format!("{app_id}:{id}:{ticks}"),
         title: title.chars().take(120).collect(),
         body: body.chars().take(1000).collect(),
         created_at: ticks / 10_000 - 11_644_473_600_000,
+        app_id,
     }))
 }

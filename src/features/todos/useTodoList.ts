@@ -1,6 +1,7 @@
 import { moveItem } from "../../utils/order.ts";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createTodoId, loadActiveTodoId, loadActiveTodoIds, loadTodos, saveActiveTodoIds, saveTodos } from "./storage";
+import { parseFollowUpPrefix } from "./followUp";
 import { dismissUpdatePrompt } from "../updater/updaterController";
 import { UPDATE_TODO_ID } from "./updateTodo";
 import { useUpdateTodo } from "./useUpdateTodo";
@@ -27,12 +28,7 @@ export function useTodoList(onStartTodo: () => void, onTimerExpired?: () => void
     }
 
     setTodos((currentTodos) => [
-      {
-        id: createTodoId(),
-        title,
-        completed: false,
-        createdAt: Date.now(),
-      },
+      { id: createTodoId(), ...parseFollowUpPrefix(title), completed: false, createdAt: Date.now() },
       ...currentTodos,
     ]);
     setDraftTodo("");

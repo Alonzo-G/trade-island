@@ -6,6 +6,9 @@ import {
 } from "./providers.ts";
 
 export type Direction = "auto" | "zh-en" | "en-zh";
+/** How the translation should sound; "plain" is the wording-focused default. */
+export type TranslationTone = "plain" | "business-formal" | "business-friendly";
+export const TRANSLATION_TONES: readonly TranslationTone[] = ["plain", "business-formal", "business-friendly"];
 export type TranslationSettings = {
   shortcut: string;
   /** Off releases the global shortcut while translation itself stays on. */
@@ -20,6 +23,8 @@ export type TranslationSettings = {
   pasteClipboardOnOpen: boolean;
   /** Translate after the source has stopped changing, while the window is open. */
   autoTranslate: boolean;
+  /** The register the translation aims for; trade correspondence picks a business one. */
+  tone: TranslationTone;
 };
 export const STORAGE_KEY = "focusd-island-translation-settings";
 const LEGACY_DEFAULT_SHORTCUTS = new Set(["Alt+Space", "Alt+C"]);
@@ -33,6 +38,7 @@ export const DEFAULT_SETTINGS: TranslationSettings = {
   models: {},
   pasteClipboardOnOpen: true,
   autoTranslate: false,
+  tone: "plain",
 };
 
 function normalizeModels(value: unknown): TranslationSettings["models"] {
@@ -61,6 +67,7 @@ export function normalizeTranslationSettings(stored: unknown): TranslationSettin
     // No longer settings: pasting the clipboard on open and translating as you type keep their defaults.
     pasteClipboardOnOpen: DEFAULT_SETTINGS.pasteClipboardOnOpen,
     autoTranslate: DEFAULT_SETTINGS.autoTranslate,
+    tone: TRANSLATION_TONES.includes(value.tone as TranslationTone) ? value.tone as TranslationTone : DEFAULT_SETTINGS.tone,
   };
 }
 

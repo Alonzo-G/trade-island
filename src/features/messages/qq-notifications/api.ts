@@ -7,6 +7,8 @@ export type QQNotification = {
   title: string;
   body: string;
   createdAt: number;
+  /** Which radar app the toast came from: "qq" | "whatsapp" | "telegram"; older snapshots omit it. */
+  appId?: string;
 };
 
 export type QQNotificationSnapshot = {
