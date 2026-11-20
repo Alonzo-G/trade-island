@@ -1,3 +1,5 @@
+mod direction;
+mod free;
 pub(crate) mod provider;
 
 use crate::clipboard_history::{parse_shortcut_binding, ShortcutBinding};

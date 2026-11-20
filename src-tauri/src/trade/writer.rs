@@ -13,6 +13,10 @@ const SCENARIOS: &[&str] = &["first-outreach", "inquiry-reply", "follow-up", "th
 
 const MAX_BRIEF_CHARACTERS: usize = 4_000;
 
+/// Fallback that should never be reached (parse_scenario validates first), kept so the
+/// compiler never needs an `expect` here.
+const DEFAULT_PROMPT: &str = "You are writing international-trade customer mail.";
+
 fn scenario_prompt(scenario: &str) -> Option<&'static str> {
     Some(match scenario {
         // A cold mail to a potential buyer: short, specific, one clear ask.
@@ -45,7 +49,9 @@ pub async fn compose_trade_text(
     base_url: Option<String>,
     model: Option<String>,
 ) -> Result<String, String> {
-    let scenario_prompt = scenario_prompt(parse_scenario(&scenario)?)?;
+    // parse_scenario guarantees a known scenario, so the prompt lookup cannot miss.
+    let scenario_prompt = scenario_prompt(parse_scenario(&scenario)?)
+        .unwrap_or(DEFAULT_PROMPT);
     let brief = brief.trim();
     if brief.is_empty() {
         return Err("请先写要点：产品、客户情况、这封邮件要达成什么。".to_string());
