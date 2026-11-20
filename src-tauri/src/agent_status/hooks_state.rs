@@ -76,7 +76,7 @@ pub(super) fn codex_hooks_state(
     // Hooks written before the rename say "FocuSD" in their status line and are otherwise the
     // same; they still count as current rather than asking every user to repair them.
     let config = normalize_windows_line_endings(config)
-        .replace("Updating Trade Island agent status", "Updating Trade Island agent status");
+        .replace("Updating FocuSD agent status", "Updating Trade Island agent status");
     let holds = |async_start: bool| {
         let expected = build_codex_hook_block(running_script_path, status_script_path, async_start);
         config.contains(&normalize_windows_line_endings(&expected))
