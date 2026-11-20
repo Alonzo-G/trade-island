@@ -51,7 +51,7 @@ impl<T: SetReadTimeout> SetReadTimeout for SharedStream<T> {
 }
 
 const ID_COMMAND: &[u8] =
-    b"fly0 ID (\"name\" \"trade-island\" \"version\" \"1.0\" \"vendor\" \"trade-island\")"\r\n";
+    b"fly0 ID (\"name\" \"trade-island\" \"version\" \"1.0\" \"vendor\" \"trade-island\")\r\n";
 /// Longest reply line accepted before giving up on a misbehaving server.
 const MAX_LINE: usize = 8_192;
 
