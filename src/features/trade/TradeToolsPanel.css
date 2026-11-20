@@ -1,0 +1,148 @@
+.trade-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0 4px 20px 4px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.trade-panel__section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.trade-panel__heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: inherit;
+}
+
+/* --- world clock --- */
+
+.trade-clock__list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.trade-clock__row {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) 52px auto auto;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  border-radius: var(--corner-sm);
+  corner-shape: var(--corner-shape);
+  background: var(--color-white-a04);
+  font-size: 12px;
+}
+
+.trade-clock__country {
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: inherit;
+  opacity: 0.72;
+}
+
+.trade-clock__city {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trade-clock__time {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.trade-clock__row--open svg {
+  color: #74d6ff;
+}
+
+.trade-clock__row--closed svg,
+.trade-clock__row--weekend svg {
+  opacity: 0.55;
+}
+
+.trade-clock__state {
+  font-size: 10px;
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+/* --- fx rates --- */
+
+.trade-fx__list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.trade-fx__row {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  align-items: baseline;
+  gap: 8px;
+  padding: 5px 10px;
+  border-radius: var(--corner-sm);
+  corner-shape: var(--corner-shape);
+  background: var(--color-white-a04);
+  font-size: 12px;
+}
+
+.trade-fx__code {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.trade-fx__value {
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.trade-fx__cny {
+  font-size: 10px;
+  opacity: 0.55;
+  font-variant-numeric: tabular-nums;
+}
+
+.trade-fx__error {
+  margin: 0;
+  padding: 4px 10px;
+  font-size: 11px;
+  color: var(--color-danger, #ff6b6b);
+}
+
+.trade-fx__empty,
+.trade-fx__updated {
+  margin: 0;
+  padding: 0 10px;
+  font-size: 10px;
+  opacity: 0.5;
+}
+
+.trade-fx__refresh {
+  width: 22px;
+  height: 22px;
+}
+
+.trade-fx__spin {
+  animation: trade-fx-spin 800ms linear infinite;
+}
+
+@keyframes trade-fx-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trade-fx__spin {
+    animation: none;
+  }
+}

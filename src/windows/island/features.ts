@@ -20,9 +20,11 @@ export type IslandFeatures = {
   agents: boolean;
   /** Translation is on and set to open as an island page rather than its own window. */
   translation: boolean;
+  /** Trade tools page (trade edition): world clock, fx rates, quoter. */
+  trade: boolean;
 };
 
-const PAGE_ORDER: IslandPage[] = ["todo", "music", "clipboard", "shelf", "qq", "agents", "translation"];
+const PAGE_ORDER: IslandPage[] = ["todo", "music", "clipboard", "shelf", "qq", "agents", "trade", "translation"];
 const SOURCE_ORDER: MessageSource[] = ["wechat", "qq", "qqMail", "dingtalk", "feishu", "wecom", "plugin"];
 
 export function isPageEnabled(page: IslandPage, features: IslandFeatures): boolean {

@@ -16,6 +16,7 @@ mod mail;
 mod qq_notifications;
 mod settings_window;
 mod system;
+mod trade;
 mod translation;
 mod tray;
 mod office_im;
@@ -139,6 +140,7 @@ pub fn run() {
             clipboard_history;
             translation;
             settings_window
+            ; trade
             ; clipboard_window
             ; app_log
         ))

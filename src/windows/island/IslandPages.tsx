@@ -21,6 +21,7 @@ import { MusicPlayerPanel } from "../../features/media/MusicPlayerPanel";
 import type { useMediaState } from "../../features/media/useMediaState";
 import { FileShelfPanel } from "../../features/file-shelf/FileShelfPanel";
 import type { useFileShelf } from "../../features/file-shelf/useFileShelf";
+import { TradeToolsPanel } from "../../features/trade/TradeToolsPanel";
 import { getTodoScrollStartRows } from "./layout";
 import type { useIslandAgentAlerts } from "./useIslandAgentAlerts";
 import type { useIslandFeatures } from "./useIslandFeatures";
@@ -142,6 +143,7 @@ export function IslandPages({
       {page === "agents" && <AgentSessionsPanel sessions={agentSessions} view={settings.agentSessionView} sort={settings.agentSessionSort} group={settings.agentSessionGroup} archiveMotion={settings.agentArchiveMotion} cardEffects={settings.agentCardEffects} hostDisplay={settings.agentHostDisplay} showElapsed={settings.agentShowElapsed} showModel={settings.agentShowModel} showActivity={settings.agentShowActivity} unseen={unseenAgentSessions} removal={agentRemoval} reveal={alertedSession} showUsage={settings.agentShowUsage} usages={agentUsages} approvals={agentApprovals} />}
       {page === "translation" && <TranslationPanel isOpen={mode === "expanded"} onOpenSettings={() => openSettingsWindow("translation")} />}
       {page === "shelf" && <FileShelfPanel shelf={fileShelf} isDropTarget={isShelfDropping} revealOnDoubleClick={settings.shelfDoubleClick === "reveal"} />}
+      {page === "trade" && <TradeToolsPanel isOpen={mode === "expanded"} />}
       {page === "todo" && (
         <TodoNotebook
           {...notebookProps}

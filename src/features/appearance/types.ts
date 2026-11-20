@@ -54,7 +54,7 @@ export type CollapsedItem = "agent" | "lyrics" | "todo";
  */
 export type CollapsedSlot = "text" | "mail" | "shelf" | "music" | "agents";
 /** The page dots in the expanded island's header, which the user can drag into any order. */
-export type PageDot = "todo" | "music" | "clipboard" | "shelf" | "translation";
+export type PageDot = "todo" | "music" | "clipboard" | "shelf" | "translation" | "trade";
 
 export type IslandSettings = {
   topEdgeLayoutVersion: 1;
@@ -194,6 +194,8 @@ export type IslandSettings = {
    * its data is kept. QQ, WeChat and clipboard history use their existing switches.
    */
   todoEnabled: boolean;
+  /** Trade tools page (trade edition): world clock, fx rates, quoter. */
+  tradeEnabled: boolean;
   musicEnabled: boolean;
   agentStatusEnabled: boolean;
   shelfEnabled: boolean;

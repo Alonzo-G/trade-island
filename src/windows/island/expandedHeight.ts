@@ -28,6 +28,8 @@ export function getShelfExpandedHeight(items: number) {
 }
 // Header, direction bar, a few lines of source, the result and the action row.
 const TRANSLATION_EXPANDED_ISLAND_HEIGHT = 420;
+// Trade tools: 4 clock rows + 4 rate rows with headings and paddings; rows are fixed-height.
+const TRADE_EXPANDED_ISLAND_HEIGHT = 420;
 // Settings fit their open page (useSettingsPageHeight): the island's padding, header and gap
 // around it, between a floor that keeps short pages from looking cramped and about the tallest
 // island the window allows, past which the page scrolls. The fallback before the first measure.
@@ -129,6 +131,8 @@ export function getExpandedIslandHeight({
         ? Math.min(getShelfExpandedHeight(shelfItems), maxPanelHeight)
       : page === "translation"
         ? Math.min(TRANSLATION_EXPANDED_ISLAND_HEIGHT, maxPanelHeight)
+      : page === "trade"
+        ? Math.min(TRADE_EXPANDED_ISLAND_HEIGHT, maxPanelHeight)
       : page === "agents"
         ? agentAlertRowHeight !== undefined
           ? getAgentAlertExpandedHeight(agentAlertRowHeight)
