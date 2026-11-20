@@ -8,6 +8,18 @@ export type TradeText = {
   working: string;
   offHours: string;
   weekend: string;
+  quoter: string;
+  unitCost: string;
+  margin: string;
+  unitsPerPackage: string;
+  freight: string;
+  insurance: string;
+  currency: string;
+  fobLabel: string;
+  cifLabel: string;
+  freightLabel: string;
+  packageLabel: string;
+  quoteInvalid: string;
 };
 
 export const zhCN: TradeText = {
@@ -20,6 +32,18 @@ export const zhCN: TradeText = {
   working: "工作中",
   offHours: "非工作时间",
   weekend: "周末",
+  quoter: "快速报价",
+  unitCost: "单价成本",
+  margin: "利润率 %",
+  unitsPerPackage: "每箱数量",
+  freight: "每箱运费",
+  insurance: "保险 %",
+  currency: "报价币种",
+  fobLabel: "FOB 单价",
+  cifLabel: "CIF 单价",
+  freightLabel: "运费/件",
+  packageLabel: "整箱货值",
+  quoteInvalid: "请检查输入：成本、利润率、数量和运费需在有效范围内。",
 };
 
 export const en: TradeText = {
@@ -32,4 +56,16 @@ export const en: TradeText = {
   working: "At work",
   offHours: "Off hours",
   weekend: "Weekend",
+  quoter: "Quick quote",
+  unitCost: "Unit cost",
+  margin: "Margin %",
+  unitsPerPackage: "Units / carton",
+  freight: "Freight / carton",
+  insurance: "Insurance %",
+  currency: "Quote in",
+  fobLabel: "FOB / unit",
+  cifLabel: "CIF / unit",
+  freightLabel: "Freight / unit",
+  packageLabel: "Carton value",
+  quoteInvalid: "Check the inputs: cost, margin, units and freight must be in range.",
 };

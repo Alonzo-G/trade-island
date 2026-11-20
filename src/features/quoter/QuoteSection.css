@@ -1,0 +1,68 @@
+.quote-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 8px;
+}
+
+.quote-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.quote-row__label {
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+.quote-row__input {
+  width: 100%;
+  padding: 3px 8px;
+  border: 1px solid var(--color-white-a12, rgba(255, 255, 255, 0.12));
+  border-radius: var(--corner-sm);
+  corner-shape: var(--corner-shape);
+  background: var(--color-white-a04);
+  color: inherit;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.quote-row__input:focus-visible {
+  outline: 1px solid var(--color-accent);
+  outline-offset: 0;
+}
+
+.quote-result {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 6px;
+  padding: 8px 10px;
+  border-radius: var(--corner-md);
+  corner-shape: var(--corner-shape);
+  background: var(--color-white-a04);
+}
+
+.quote-result__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+.quote-result__row strong {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.quote-result__row--fob strong {
+  color: var(--color-accent);
+}
+
+.quote-invalid {
+  margin: 6px 0 0;
+  padding: 0 10px;
+  font-size: 11px;
+  opacity: 0.6;
+}
