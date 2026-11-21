@@ -20,6 +20,13 @@ export type TradeText = {
   freightLabel: string;
   packageLabel: string;
   quoteInvalid: string;
+  launcher: {
+    title: string;
+    emptyHint: string;
+    missing: string;
+    start: string;
+    remove: (name: string) => string;
+  };
   writer: {
     title: string;
     scenario: string;
@@ -63,6 +70,13 @@ export const zhCN: TradeText = {
   freightLabel: "运费/件",
   packageLabel: "整箱货值",
   quoteInvalid: "请检查输入：成本、利润率、数量和运费需在有效范围内。",
+  launcher: {
+    title: "快捷应用",
+    emptyHint: "把 .lnk / .exe 快捷方式拖到这里，随时一键启动",
+    missing: "目标已移动或卸载",
+    start: "启动",
+    remove: (name) => `移除 ${name}`,
+  },
   writer: {
     title: "AI 写作助手",
     scenario: "场景",
@@ -106,6 +120,13 @@ export const en: TradeText = {
   freightLabel: "Freight / unit",
   packageLabel: "Carton value",
   quoteInvalid: "Check the inputs: cost, margin, units and freight must be in range.",
+  launcher: {
+    title: "Quick apps",
+    emptyHint: "Drop .lnk / .exe shortcuts here to start them with one click",
+    missing: "Target moved or uninstalled",
+    start: "Start",
+    remove: (name) => `Remove ${name}`,
+  },
   writer: {
     title: "AI writer",
     scenario: "Scenario",

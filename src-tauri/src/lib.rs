@@ -15,6 +15,7 @@ mod notification_diagnostics;
 mod mail;
 mod qq_notifications;
 mod settings_window;
+mod app_launcher;
 mod system;
 mod trade;
 mod translation;
@@ -116,6 +117,9 @@ pub fn run() {
             }
             system::fullscreen::start(app.handle());
             media_plugins::init(app.handle());
+            if let Err(error) = app_launcher::init(app.handle()) {
+                eprintln!("failed to initialize the app launcher: {error}");
+            }
             if let Err(error) = plugin_host::init(app.handle()) {
                 eprintln!("failed to initialize plugins: {error}");
             }
@@ -141,6 +145,7 @@ pub fn run() {
             translation;
             settings_window
             ; trade
+            ; app_launcher
             ; clipboard_window
             ; app_log
         ))

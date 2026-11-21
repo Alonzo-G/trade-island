@@ -129,7 +129,7 @@ export function IslandPages({
       {page === "shelf" && <FileShelfPanel shelf={fileShelf} isDropTarget={isShelfDropping} revealOnDoubleClick={settings.shelfDoubleClick === "reveal"} />}
       {page === "trade" && (
         <div className="trade-page">
-          <TradeToolsPanel isOpen={mode === "expanded"} onContentHeight={onTradeHeight} />
+          <TradeToolsPanel isOpen={mode === "expanded"} onContentHeight={onTradeHeight} launcherDropPaths={null} />
         </div>
       )}
       {page === "todo" && (

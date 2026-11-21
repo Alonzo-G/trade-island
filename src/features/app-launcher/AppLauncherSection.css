@@ -1,0 +1,122 @@
+.launcher-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 6px;
+}
+
+.launcher-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 4px 6px;
+  border-radius: var(--corner-md);
+  corner-shape: var(--corner-shape);
+  background: var(--color-white-a04);
+  transition: background 140ms ease;
+}
+
+.launcher-tile:hover {
+  background: var(--color-white-a08);
+}
+
+.launcher-tile--dragging {
+  opacity: 0.45;
+}
+
+.launcher-tile--missing {
+  opacity: 0.45;
+}
+
+.launcher-tile__start {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.launcher-tile__start:disabled {
+  cursor: default;
+}
+
+.launcher-tile__start:focus-visible {
+  outline: 1px solid var(--color-accent);
+  outline-offset: 1px;
+  border-radius: var(--corner-sm);
+}
+
+.launcher-tile__start img {
+  border-radius: var(--corner-sm);
+  corner-shape: var(--corner-shape);
+}
+
+.launcher-tile__name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 10px;
+  line-height: 14px;
+  opacity: 0.85;
+}
+
+.launcher-tile__remove {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: none;
+  padding: 2px;
+  border: 0;
+  border-radius: var(--corner-xs);
+  background: none;
+  color: inherit;
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.launcher-tile:hover .launcher-tile__remove {
+  display: block;
+}
+
+.launcher-tile__remove:hover {
+  opacity: 1;
+}
+
+.launcher-tile__grip {
+  display: none;
+  color: inherit;
+  opacity: 0.4;
+}
+
+.launcher-tile:hover .launcher-tile__grip {
+  display: block;
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+}
+
+.launcher-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 10px;
+  border: 1px dashed var(--color-white-a12);
+  border-radius: var(--corner-md);
+  corner-shape: var(--corner-shape);
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.launcher-error {
+  margin: 0;
+  padding: 0 10px;
+  font-size: 11px;
+  color: var(--color-danger);
+}

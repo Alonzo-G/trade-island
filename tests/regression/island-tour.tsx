@@ -82,6 +82,8 @@ mockIPC((command, payload) => {
   const args = (payload ?? {}) as Record<string, unknown>;
   switch (command) {
     case "get_workbuddy_usage": return { status: "signedOut" };
+    case "get_app_launcher": case "add_app_launcher_paths": case "remove_app_launcher_items": case "reorder_app_launcher": return { items: [] };
+    case "get_app_launcher_icon": return null;
     case "get_fx_rates": return { fetchedAt: Date.now(), nextUpdateAt: Date.now() + 86_400_000, base: "USD",
       rates: [["CNY", 6.69], ["EUR", 0.91], ["GBP", 0.76], ["JPY", 159.75]] };
     case "get_office_im_state": case "set_office_im_enabled": case "clear_office_im": return tourOffice(empty);

@@ -8,6 +8,8 @@ mod store;
 mod tests;
 mod thumbnail;
 
+pub(crate) use thumbnail::png_data_url;
+
 use serde::{Deserialize, Serialize};
 use std::{
     fs,
