@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as islandApi from "./api";
+import type { IslandSideAttachment } from "./api";
 import { clearIslandPosition, loadIslandPosition, saveIslandPosition, type IslandPosition } from "./storage";
 
 /** Tracks where the user dragged the island, persisting it across launches. */
 export function useIslandPosition(positionLocked: boolean) {
   const [isPositionDetached, setIsPositionDetached] = useState(() => loadIslandPosition() !== null);
+  const [sideAttachment, setSideAttachment] = useState<IslandSideAttachment>("top");
   const islandPositionRef = useRef<IslandPosition | null>(loadIslandPosition());
 
   const startIslandDrag = useCallback(() => {
@@ -48,6 +50,13 @@ export function useIslandPosition(positionLocked: boolean) {
     let didCancel = false;
     let unlisten: (() => void) | null = null;
 
+    void islandApi.listenIslandSideAttachment((edge) => {
+      setSideAttachment(edge);
+    })
+      .catch((error) => {
+        console.error("Failed to listen for side attachment changes", error);
+      });
+
     void islandApi.listenIslandPositionCleared(() => {
       islandPositionRef.current = null;
       setIsPositionDetached(false);
@@ -70,5 +79,5 @@ export function useIslandPosition(positionLocked: boolean) {
     };
   }, []);
 
-  return { isPositionDetached, setIsPositionDetached, islandPositionRef, startIslandDrag };
+  return { isPositionDetached, setIsPositionDetached, islandPositionRef, startIslandDrag, sideAttachment };
 }

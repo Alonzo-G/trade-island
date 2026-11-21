@@ -7,6 +7,17 @@ import type { IslandMode, NativeGlassState } from "./types";
 
 // Mirrors TOP_ATTACHMENT_CHANGED_EVENT in src-tauri/src/island/top_edge.rs.
 export const TOP_ATTACHMENT_CHANGED_EVENT = "island-top-attachment-changed";
+// Mirrors SIDE_ATTACHMENT_CHANGED_EVENT in src-tauri/src/island/top_edge.rs (trade edition).
+export const SIDE_ATTACHMENT_CHANGED_EVENT = "island-side-attachment-changed";
+
+/** "top" | "left" | "right" | "none": which screen edge the island snapped to. */
+export type IslandSideAttachment = "top" | "left" | "right" | "none";
+
+export function listenIslandSideAttachment(
+  handler: (edge: IslandSideAttachment) => void,
+): Promise<UnlistenFn> {
+  return listen<IslandSideAttachment>(SIDE_ATTACHMENT_CHANGED_EVENT, ({ payload }) => handler(payload));
+}
 
 /** Whether the island currently sits flush with the top edge of its monitor. */
 export function getIslandTopAttachment(): Promise<boolean> {

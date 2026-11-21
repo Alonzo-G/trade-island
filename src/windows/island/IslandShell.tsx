@@ -243,6 +243,7 @@ export function IslandShell({
           onWindowDragStart={onWindowDragStart}
           onTuck={onTuck}
         />
+        {/* (collapsed bar keeps its own gesture) */}
 
         <div
           ref={panelRef}
@@ -271,6 +272,7 @@ export function IslandShell({
             onOpenMessages={onOpenMessages}
             onOpenTranslator={onOpenTranslator}
             onResetPosition={onResetPosition}
+            onWindowDragStart={onWindowDragStart}
             minimizesToTray={minimizesToTray}
             onMinimize={onMinimize}
             pageActions={pageActions}

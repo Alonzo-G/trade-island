@@ -36,6 +36,8 @@ type IslandHeaderProps = {
   /** Opens translation (its island page or its own window); null when translation is off. */
   onOpenTranslator: (() => void) | null;
   onResetPosition: () => void;
+  /** Starts a native window drag (expanded: press the header, then move). */
+  onWindowDragStart: () => void;
   /** False when minimizing tucks the island to the top edge instead. */
   minimizesToTray: boolean;
   onMinimize: () => void;
@@ -66,6 +68,7 @@ export function IslandHeader({
   onOpenMessages,
   onOpenTranslator,
   onResetPosition,
+  onWindowDragStart,
   minimizesToTray,
   onMinimize,
   pageActions,
@@ -100,7 +103,16 @@ export function IslandHeader({
   ].join(" ");
 
   return (
-    <header className="island__header">
+    <header
+      className="island__header"
+      // Expanded drag: pressing the header asks the native side for a window drag, which
+      // follows the pointer; interactive elements below keep their own events.
+      onPointerDown={(event) => {
+        if (event.button !== 0) return;
+        if (event.target instanceof Element && event.target.closest("button, input, textarea, select, a, [data-window-drag='false']")) return;
+        onWindowDragStart();
+      }}
+    >
       <div className="island__title">
         {features.agents ? (
           // The status light doubles as the way into the Agent page.

@@ -194,6 +194,8 @@ fn drag_island(window: WebviewWindow, current_state: IslandWindowState) -> Resul
         *state
     });
     top_edge::set_attached(&window, false);
+    // Side snap (trade edition) clears with the drag: the island leaves its edge.
+    top_edge::clear_side_attachment(&window);
 
     if let Err(error) = window.start_dragging() {
         mutate_window_state(|state| {

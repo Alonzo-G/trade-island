@@ -151,6 +151,9 @@ pub(crate) struct IslandWindowState {
     pub(super) is_dragging: bool,
     pub(super) position_locked: bool,
     pub(super) top_attached: bool,
+    /// Side snap (trade edition): "top" | "left" | "right" | "none". Sides only snap and
+    /// shape the island; the tuck-into-the-edge animation stays a top-edge feature.
+    pub(super) side_attachment: &'static str,
     pub(super) glass_enabled: bool,
     pub(super) glass_intensity: f64,
     pub(super) glass_tint: (u8, u8, u8),
@@ -254,6 +257,7 @@ impl Default for IslandWindowState {
             is_dragging: false,
             position_locked: false,
             top_attached: true,
+            side_attachment: "top",
             glass_enabled: false,
             glass_intensity: 72.0,
             glass_tint: (47, 47, 55),

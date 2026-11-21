@@ -8,6 +8,8 @@ use super::state::{mutate_window_state, read_window_state, IslandPosition, Islan
 
 // Mirrored by TOP_ATTACHMENT_CHANGED_EVENT in src/windows/island/api.ts.
 pub(crate) const TOP_ATTACHMENT_CHANGED_EVENT: &str = "island-top-attachment-changed";
+/// Side snap (trade edition): which screen edge the island last snapped to.
+pub(crate) const SIDE_ATTACHMENT_CHANGED_EVENT: &str = "island-side-attachment-changed";
 // Dropping the island this close to the top edge (logical px) pulls it flush.
 const SNAP_DISTANCE: f64 = 16.0;
 
@@ -30,24 +32,69 @@ pub(crate) fn snap_to_top(window: &WebviewWindow, position: IslandPosition) -> I
         set_attached(window, false);
         return position;
     };
+    let scale = monitor.scale_factor();
+    let snap_distance = (SNAP_DISTANCE * scale).round() as i32;
     let top = monitor.position().y + monitor_top_inset(&monitor);
-    let snap_distance = (SNAP_DISTANCE * monitor.scale_factor()).round() as i32;
-    let snapped = IslandPosition {
-        x: position.x,
-        y: snapped_y(position.y, top, snap_distance),
+    let monitor_position = monitor.position();
+    let monitor_size = monitor.size();
+    let window_width = window.outer_size().map(|size| size.width as i32).unwrap_or(0);
+
+    // Trade edition: the island can also live on the left or right screen edge. The nearest of
+    // the three edges within the snap distance wins; sides only snap, tucking stays top-only.
+    let distance_to_top = (position.y - top).abs();
+    let distance_to_left = (position.x - monitor_position.x).abs();
+    let distance_to_right = (position.x + window_width - (monitor_position.x + monitor_size.width as i32)).abs();
+
+    let (edge, x, y) = if distance_to_top <= distance_to_left && distance_to_top <= distance_to_right {
+        ("top", position.x, snapped_y(position.y, top, snap_distance))
+    } else if distance_to_left <= distance_to_right {
+        ("left", snapped_y(position.x, monitor_position.x, snap_distance), position.y)
+    } else {
+        ("right", snapped_y(position.x, monitor_position.x + monitor_size.width as i32 - window_width, snap_distance), position.y)
     };
 
+    let within = match edge {
+        "top" => distance_to_top,
+        "left" => distance_to_left,
+        _ => distance_to_right,
+    } <= snap_distance;
+
+    let snapped = IslandPosition { x, y };
     if snapped != position {
         let target = Position::Physical(PhysicalPosition::new(snapped.x, snapped.y));
         if let Err(error) = window.set_position(target) {
-            eprintln!("Failed to snap island to the top edge: {error}");
-            set_attached(window, position.y == top);
+            eprintln!("Failed to snap island to a screen edge: {error}");
+            set_attached(window, false);
             return position;
         }
     }
 
-    set_attached(window, snapped.y == top);
+    set_attached(window, within && edge == "top");
+    if within {
+        set_side_attachment(window, edge);
+    } else {
+        set_side_attachment(window, "none");
+    }
     snapped
+}
+
+/// Clears the side snap when a drag starts; the island leaves its edge.
+pub(crate) fn clear_side_attachment(window: &WebviewWindow) {
+    mutate_window_state(|state| {
+        state.side_attachment = "none";
+        *state
+    });
+    let _ = window.emit(SIDE_ATTACHMENT_CHANGED_EVENT, "none");
+}
+
+/// Records which edge the island snapped to ("top" | "left" | "right" | "none") for the front
+/// end's shape and the hit-test; sides do not change the tuck system.
+fn set_side_attachment(window: &WebviewWindow, edge: &'static str) {
+    mutate_window_state(|state| {
+        state.side_attachment = edge;
+        *state
+    });
+    let _ = window.emit(SIDE_ATTACHMENT_CHANGED_EVENT, edge);
 }
 
 pub(crate) fn set_attached(window: &WebviewWindow, attached: bool) {

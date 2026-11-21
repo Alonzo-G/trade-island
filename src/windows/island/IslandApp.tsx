@@ -156,6 +156,7 @@ export function IslandApp() {
     minimizeIsland,
     startIslandDrag,
     resetIslandPosition,
+    sideAttachment,
   } = useIslandWindow({
     mode,
     isTucked,
@@ -218,7 +219,7 @@ export function IslandApp() {
         tuckStyle={settings.tuckStyle}
         topEdgeShoulders={settings.topEdgeShoulders}
         positionLocked={settings.positionLocked}
-        isDetached={isPositionDetached || settings.marginY > 0}
+        isDetached={(isPositionDetached || settings.marginY > 0) && sideAttachment !== "left" && sideAttachment !== "right"}
         islandShape={settings.islandShape}
         showTitle={settings.showTitle}
         showCollapsedText={settings.showCollapsedText}
