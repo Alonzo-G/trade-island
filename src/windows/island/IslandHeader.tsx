@@ -85,7 +85,6 @@ export function IslandHeader({
   const dots = pageOrder.filter((dot) => (dot === "translation" ? onOpenTranslator !== null : features[dot]));
   const dotLabels = {
     todo: t.island.todoList,
-    music: t.island.music,
     clipboard: t.island.clipboardHistory,
     shelf: t.island.shelf,
     translation: t.translator.title,
