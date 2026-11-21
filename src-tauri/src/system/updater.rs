@@ -122,11 +122,13 @@ mod tests {
     }
 
     #[test]
-    fn shipped_updater_config_parses_with_the_empty_pubkey_placeholder() {
+    fn shipped_updater_config_carries_the_release_pubkey() {
         let parsed: tauri_plugin_updater::Config = serde_json::from_value(shipped_updater_config())
             .expect("plugins.updater must deserialize or the app aborts at startup");
 
-        assert_eq!(parsed.pubkey, "");
+        // Trade edition: the release key ships in the main config (the private key lives in
+        // GitHub Actions secrets), so every build can update in-app.
+        assert!(!parsed.pubkey.is_empty());
         assert!(!parsed.endpoints.is_empty());
     }
 
