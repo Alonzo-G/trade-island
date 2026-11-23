@@ -7,14 +7,12 @@ use serde::{Deserialize, Serialize};
 use std::{
     fs,
     path::PathBuf,
-    sync::{Mutex, OnceLock},
+    sync::{Mutex, OnceLock, PoisonError},
 };
 use tauri::{AppHandle, Manager};
 
-mod commands;
+pub(crate) mod commands;
 mod icon;
-
-pub(crate) use commands::tauri_commands;
 
 const LAUNCHER_FILE_NAME: &str = "app-launcher.json";
 /// How many shortcuts the launcher keeps; reorderable, not growable past this.
