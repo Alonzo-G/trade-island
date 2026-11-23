@@ -145,7 +145,8 @@ export function freePort() {
 
 /** A DevTools protocol session on the browser's first tab. */
 async function connect(port) {
-  const deadline = Date.now() + 15_000;
+  // Runners can be slow to boot the headless browser; give it twice the original window.
+  const deadline = Date.now() + 30_000;
   let page;
   while (!page && Date.now() < deadline) {
     try {
@@ -271,20 +272,33 @@ async function main() {
   for (const featuresEnabled of [false, true]) {
     const fixtures = pages.filter((page) => page.includes("features=enabled") === featuresEnabled);
     if (fixtures.length === 0) continue;
-    await withRegressionBrowser(root, fixtures[0], async ({ session, base }) => {
-      for (const page of fixtures) {
-        const started = Date.now();
-        const { outcome, state, errors } = await runPage(session, base + page);
-        const seconds = ((Date.now() - started) / 1000).toFixed(1);
-        console.log(`${outcome === "passed" ? "✓" : "✗"} ${page}  ${outcome}, ${passedChecks(state.text ?? "")} checks, ${seconds}s`);
-        if (outcome !== "passed") {
-          failed += 1;
-          const lines = (state.text ?? "").split("\n").filter((line) => line.trim());
-          for (const line of lines.filter((line) => !line.startsWith("PASS ")).slice(-5)) console.log(`    ${line}`);
-          for (const error of errors.slice(0, 3)) console.log(`    ${error.split("\n")[0]}`);
+      // Runner browsers occasionally fail to bring the DevTools endpoint up (sporadic on
+      // GitHub windows runners); one whole-browser retry absorbs it without masking real failures.
+      let browserAttempt = 0;
+      while (true) {
+        browserAttempt += 1;
+        try {
+            await withRegressionBrowser(root, fixtures[0], async ({ session, base }) => {
+              for (const page of fixtures) {
+                const started = Date.now();
+                const { outcome, state, errors } = await runPage(session, base + page);
+                const seconds = ((Date.now() - started) / 1000).toFixed(1);
+                console.log(`${outcome === "passed" ? "✓" : "✗"} ${page}  ${outcome}, ${passedChecks(state.text ?? "")} checks, ${seconds}s`);
+                if (outcome !== "passed") {
+                  failed += 1;
+                  const lines = (state.text ?? "").split("\n").filter((line) => line.trim());
+                  for (const line of lines.filter((line) => !line.startsWith("PASS ")).slice(-5)) console.log(`    ${line}`);
+                  for (const error of errors.slice(0, 3)) console.log(`    ${error.split("\n")[0]}`);
+                }
+              }
+            }, { featuresEnabled });
+          break;
+        } catch (error) {
+          const transient = String(error).includes("DevTools endpoint");
+          if (!transient || browserAttempt >= 2) throw error;
+          console.log(`Browser did not come up (attempt ${browserAttempt}); retrying once…`);
         }
       }
-    }, { featuresEnabled });
   }
   console.log(failed === 0 ? `All ${pages.length} regression pages passed.` : `${failed} of ${pages.length} regression pages did not pass.`);
   return failed === 0 ? 0 : 1;
