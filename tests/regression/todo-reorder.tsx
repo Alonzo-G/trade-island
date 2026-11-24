@@ -60,7 +60,12 @@ try {
   await pointer("a", "pointerup", y);
   check(order() === "b,c,a" && JSON.stringify(moves) === '[["a",2]]', "松手按最终 index 提交");
   check(JSON.parse(localStorage.getItem("focusd-island-todos")!).map((item: { id: string }) => item.id).join(",") === "b,c,a", "松手顺序持久化");
-  await act(async () => { await new Promise((resolve) => setTimeout(resolve, 220)); });
+  // The settle-back animation clears the transform when it ends; a slow runner schedules
+  // frames later, so poll instead of waiting a fixed 220ms.
+  const settleDeadline = Date.now() + 2000;
+  while ((row("a").style.transform || row("a").getAnimations().length > 0) && Date.now() < settleDeadline) {
+    await act(async () => { await new Promise((resolve) => setTimeout(resolve, 40)); });
+  }
   check(!row("a").style.transform && row("a").getAnimations().length === 0, "落位结束清理变换");
   moves = [];
   y = row("a").getBoundingClientRect().top + 16;
