@@ -58,8 +58,8 @@ function Fixture() {
   const state = useSyncExternalStore(subscribeToUpdate, getUpdateState);
   const visibleTodo = syncUpdateTodo([], { ...state, hasVersion: state.nextVersion !== "" }, "Update").length > 0;
   return <>
-    <IslandHeader isExpanded={expanded} page={page} features={{ todo: true, clipboard: true, shelf: true,
-      agents: true, translation: true, qq: true, wechat: true, qqMail: true, trade: true }} onWindowDragStart={() => {}} pageOrder={["todo", "clipboard", "shelf", "translation", "trade"]}
+    <IslandHeader isExpanded={expanded} page={page} features={{ todo: true, apps: true, clipboard: true, shelf: true,
+      agents: true, translation: true, qq: true, wechat: true, qqMail: true, trade: true }} onWindowDragStart={() => {}} pageOrder={["todo", "apps", "clipboard", "shelf", "translation", "trade"]}
       pageButtonStyle={style} onPageOrderChange={() => {}} showTitle={false} isDetached={false} agentVisualState="idle"
       agentStatusLabel="Agent" qqNotificationCount={0} wechatPending={false} officePending={null} onPageChange={changePage} onCollapse={() => changeExpanded(false)}
       onOpenSettings={() => {}} onOpenMessages={() => {}} onOpenTranslator={() => {}} onResetPosition={() => {}}

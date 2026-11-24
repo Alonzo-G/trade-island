@@ -7,7 +7,9 @@ use super::{manifest::Manifest, packages::IndexEntry, process::Worker, protocol:
 pub const EVENT: &str = "plugins-changed";
 /// The trade edition's own plugin index; forks point `FOCUSD_PLUGINS_INDEX` or the
 /// developer-mode setting at theirs without touching this build.
-const DEFAULT_INDEX: &str = "https://github.com/Alonzo-G/trade-island/releases/latest/download/plugins-index.json";
+// Trade edition: no public plugin index yet — our own trade plugins come later. The
+// developer-mode custom index still works for local testing.
+const DEFAULT_INDEX: &str = "";
 
 #[derive(Clone, Default, Serialize)]
 #[serde(rename_all = "camelCase")]

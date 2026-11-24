@@ -253,9 +253,9 @@ if (!automated) {
     };
     await drag(".dot-button--todo", ".dot-button--clipboard");
     const savedOrder = JSON.parse(localStorage.getItem("focusd-island-settings") ?? "{}").pageOrder as string[] | undefined;
-    check(dotOrder().join() === "clipboard,todo,shelf,translation,trade" && savedOrder?.join() === "clipboard,todo,shelf,translation,trade" && island().className === pageBefore,
+    check(dotOrder().join() === "apps,clipboard,todo,shelf,translation,trade" && savedOrder?.join() === "apps,clipboard,todo,shelf,translation,trade" && island().className === pageBefore,
       `拖动页面圆点可以调整顺序并保存，拖完不切页（${dotOrder().join()}）`);
-    await drag(".dot-button--todo", ".dot-button--clipboard");
+    await drag(".dot-button--todo", ".dot-button--apps");
     check(dotOrder()[0] === "todo", "圆点可以拖回原来的位置");
     // Translation is one of the page capsules on the left; the header's old button is gone.
     await click(".dot-button--translation");
@@ -304,6 +304,7 @@ if (!automated) {
 
     const pages: Array<[string, string]> = [
       [".dot-button--todo", "待办"],
+      [".dot-button--apps", "快捷应用"],
       [".dot-button--trade", "外贸工具"],
       [".dot-button--clipboard", "剪贴板"],
       [".dot-button--shelf", "文件中转"],
@@ -338,11 +339,11 @@ if (!automated) {
     // Appearance → Collapsed island: three items in order, moved with the arrow keys on a handle.
     await click(".settings-sidebar__item[data-category='appearance']");
     const capsule = document.querySelector<HTMLButtonElement>('[aria-label="页面按钮"] button:first-child')!;
-    check(capsule.getAttribute("aria-pressed") === "true" && document.querySelectorAll(".dot-button--capsule").length === 6, "已保存为胶囊的页面按钮保持胶囊（含消息）");
+    check(capsule.getAttribute("aria-pressed") === "true" && document.querySelectorAll(".dot-button--capsule").length === 7, "已保存为胶囊的页面按钮保持胶囊（含消息）");
     await click('[aria-label="页面按钮"] button:last-child');
     const savedStyle = JSON.parse(localStorage.getItem("focusd-island-settings") ?? "{}").pageButtonStyle;
-    check(document.querySelectorAll(".dot-button--icon svg, .island__agent-button svg.lucide-bot").length === 7 &&
-      document.querySelectorAll(".agent-page-preview__dots svg").length === 5 && savedStyle === "icon", "六个入口切换为图标，外观预览和保存同步");
+    check(document.querySelectorAll(".dot-button--icon svg, .island__agent-button svg.lucide-bot").length === 8 &&
+      document.querySelectorAll(".agent-page-preview__dots svg").length === 6 && savedStyle === "icon", "七个入口切换为图标，外观预览和保存同步");
     await click('[aria-label="页面按钮"] button:first-child');
     const priority = () => [...document.querySelectorAll<HTMLElement>(".reorder-list__item")].map((item) => item.dataset.reorderId);
     check(priority().join() === "agent,todo", "外观页列出收起时的显示顺序：Agent 任务、待办");

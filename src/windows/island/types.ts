@@ -1,7 +1,7 @@
 export type IslandMode = "collapsed" | "expanded";
 
 /** The pages built into the island. */
-export type BuiltinPage = "todo" | "clipboard" | "shelf" | "qq" | "agents" | "trade" | "translation";
+export type BuiltinPage = "todo" | "clipboard" | "shelf" | "apps" | "qq" | "agents" | "trade" | "translation";
 
 /** Any page the expanded island can show; settings open as one unless they have their own window. */
 export type IslandPage = BuiltinPage | "settings";

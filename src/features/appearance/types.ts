@@ -54,7 +54,7 @@ export type CollapsedItem = "agent" | "todo";
  */
 export type CollapsedSlot = "text" | "mail" | "shelf" | "agents";
 /** The page dots in the expanded island's header, which the user can drag into any order. */
-export type PageDot = "todo" | "clipboard" | "shelf" | "translation" | "trade";
+export type PageDot = "todo" | "clipboard" | "shelf" | "apps" | "translation" | "trade";
 
 export type IslandSettings = {
   topEdgeLayoutVersion: 1;
@@ -196,6 +196,8 @@ export type IslandSettings = {
   todoEnabled: boolean;
   /** Trade tools page (trade edition): world clock, fx rates, quoter. */
   tradeEnabled: boolean;
+  /** Quick-app launcher page (trade edition). */
+  appsEnabled: boolean;
   musicEnabled: boolean;
   agentStatusEnabled: boolean;
   shelfEnabled: boolean;

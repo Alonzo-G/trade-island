@@ -5,7 +5,7 @@ import { PluginsSettingsPage } from "../../src/windows/settings/PluginsSettingsP
 import { I18nProvider, LOCALE_STORAGE_KEY, TRANSLATIONS } from "../../src/i18n";
 import type { PluginIndexEntry } from "../../src/features/plugins/api";
 import { PLUGIN_MARKET_ENABLED, PLUGINS_ENABLED } from "../../src/features/releaseFlags.ts";
-import { NATIVE_PLUGINS, NATIVE_PLUGINS_KEY } from "../../src/features/plugins/native";
+import { NATIVE_PLUGINS_KEY } from "../../src/features/plugins/native";
 import { DEFAULT_SETTINGS } from "../../src/features/appearance/settings";
 import type { IslandSettings } from "../../src/features/appearance/types";
 import { OFFICE_IM_ENABLED_KEY } from "../../src/features/messages/office-im/storage";
@@ -60,22 +60,9 @@ try {
   if (!PLUGIN_MARKET_ENABLED) {
     check(cards.length === 0, "正式版不显示插件市场");
   } else {
-    const market = TRANSLATIONS[locale].settings.plugins.market;
-    check(cards.length === NATIVE_PLUGINS.length && cards.every((card) => Math.abs(card.offsetWidth - card.offsetHeight) <= 1), "插件市场是一组方形卡片");
-    const get = document.querySelector<HTMLButtonElement>(`button[aria-label='${market.installNamed(market.items.dingtalk.name)}']`)!;
-    await act(async () => get.click());
-    check(JSON.stringify(JSON.parse(localStorage.getItem(NATIVE_PLUGINS_KEY) ?? "[]")) === JSON.stringify(["dingtalk"]) && cards[0].classList.contains("plugin-card--installed"), "安装后写入已安装列表并显示已安装");
-    check(JSON.parse(localStorage.getItem(OFFICE_IM_ENABLED_KEY) ?? "{}").dingtalk === true, "安装钉钉同时打开它在消息设置里的开关");
-    await act(async () => document.querySelector<HTMLButtonElement>(`button[aria-label='${market.uninstallNamed(market.items.dingtalk.name)}']`)!.click());
-    check(localStorage.getItem(NATIVE_PLUGINS_KEY) === "[]" && !cards[0].classList.contains("plugin-card--installed"), "卸载后恢复为未安装");
-    await act(async () => document.querySelector<HTMLButtonElement>(`button[aria-label='${market.installNamed(market.items.cursor.name)}']`)!.click());
-    check(latestSettings.agentShowCursor, "安装 Cursor 同时打开它在 Agent 设置里的开关");
-    await act(async () => document.querySelector<HTMLButtonElement>(`button[aria-label='${market.installNamed(market.items.zcode.name)}']`)!.click());
-    check(latestSettings.agentShowZcode && latestSettings.agentQuotaSources.includes("zcode"), "安装 Z Code 同时打开它的开关并勾上额度环");
-    await act(async () => document.querySelector<HTMLButtonElement>(`button[aria-label='${market.uninstallNamed(market.items.zcode.name)}']`)!.click());
-    await act(async () => document.querySelector<HTMLButtonElement>(`button[aria-label='${market.uninstallNamed(market.items.cursor.name)}']`)!.click());
-    const fixtureBox = document.getElementById("fixture")!.getBoundingClientRect();
-    check(cards.every((card) => card.getBoundingClientRect().right <= fixtureBox.right + 1 && card.scrollWidth <= card.clientWidth), "窄布局下卡片不溢出");
+    // Trade edition: the built-in market ships empty until trade plugins exist.
+    check(cards.length === 0, "trade 版插件市场为空（无内置插件）");
+    check(!document.querySelector(`button[aria-label='${TRANSLATIONS[locale].settings.plugins.market.installNamed("")}']`), "无安装按钮");
   }
   if (!PLUGINS_ENABLED) {
     const guide = document.querySelector<HTMLElement>(".plugin-development")!;

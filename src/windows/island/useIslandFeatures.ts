@@ -54,7 +54,8 @@ export function useIslandFeatures({
     agents: settings.agentStatusEnabled,
     translation: settings.translationEnabled && settings.translationTarget === "island",
     trade: settings.tradeEnabled === true,
-  }), [clipboardEnabled, qqEnabled, settings.agentStatusEnabled, settings.mailEnabled, settings.musicEnabled, settings.shelfEnabled, settings.todoEnabled, settings.translationEnabled, settings.translationTarget, settings.tradeEnabled, wechatEnabled, hasPluginMessages, office.dingtalk, office.feishu, office.wecom]);
+    apps: settings.appsEnabled === true,
+  }), [clipboardEnabled, qqEnabled, settings.agentStatusEnabled, settings.mailEnabled, settings.musicEnabled, settings.shelfEnabled, settings.todoEnabled, settings.translationEnabled, settings.translationTarget, settings.tradeEnabled, settings.appsEnabled, wechatEnabled, hasPluginMessages, office.dingtalk, office.feishu, office.wecom]);
 
   useEffect(() => {
     const next = islandPageFor(page, features, settings.clipboardDetached);

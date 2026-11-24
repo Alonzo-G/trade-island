@@ -10,7 +10,7 @@ import "./AppLauncherSection.css";
  * click starts them. Drops of .lnk / .exe / .url files add shortcuts; anything else the
  * native side rejects with a readable message.
  */
-export function AppLauncherSection({ dropPaths }: { dropPaths: string[] | null }) {
+export function AppLauncherSection({ dropPaths, standalone = false }: { dropPaths: string[] | null; standalone?: boolean }) {
   const t = useTranslation();
   const { items, error, busy, addPaths, remove, reorder, start } = useAppLauncher(true);
   const [icons, setIcons] = useState<Record<string, string | null>>({});
@@ -37,8 +37,8 @@ export function AppLauncherSection({ dropPaths }: { dropPaths: string[] | null }
   }, [dropPaths, addPaths]);
 
   return (
-    <div className="trade-panel__section" role="group" aria-label={t.trade.launcher.title}>
-      <h2 className="trade-panel__heading">{t.trade.launcher.title}</h2>
+    <div className={`launcher-section${standalone ? " launcher-section--standalone" : ""}`} role="group" aria-label={t.trade.launcher.title}>
+      {standalone && <h2 className="trade-panel__heading">{t.trade.launcher.title}</h2>}
       {error && <p className="launcher-error" role="alert">{error}</p>}
       {items.length === 0 ? (
         <div className="launcher-empty" role="status">

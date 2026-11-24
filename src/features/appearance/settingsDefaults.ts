@@ -116,6 +116,7 @@ export const DEFAULT_SETTINGS: IslandSettings = {
   keepVisibleWhileTodoRunning: false,
   todoEnabled: true,
   tradeEnabled: true,
+  appsEnabled: true,
   musicEnabled: true,
   agentStatusEnabled: true,
   agentTitleEnabled: true,

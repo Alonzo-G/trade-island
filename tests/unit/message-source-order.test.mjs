@@ -17,10 +17,10 @@ test("dragging a tab moves it among the visible tabs and leaves hidden ones in p
   assert.deepEqual(moveSource(order, visible, "qq", "qq"), order);
 });
 
-test("installed plugins keep only known ids", () => {
+test("trade edition has no built-in plugins, so installs resolve to none", () => {
+  // The trade catalog ships empty: saved install lists from the upstream island resolve
+  // to an empty record and nothing shows as installed.
   const installed = normalizeInstalledNativePlugins(["feishu", "nope", 3]);
-  assert.equal(installed.feishu, true);
-  assert.equal(installed.dingtalk, false);
-  assert.equal(Object.keys(installed).length, 7);
-  assert.equal(normalizeInstalledNativePlugins("bad").cursor, false);
+  assert.equal(Object.keys(installed).length, 0);
+  assert.equal(normalizeInstalledNativePlugins("bad").cursor, undefined);
 });

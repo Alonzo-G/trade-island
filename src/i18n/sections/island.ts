@@ -17,7 +17,7 @@ export type IslandText = {
   clipboardHistory: string;
   shelf: string;
   /** Short page names in the tips above the header dots. */
-  pageNames: { todo: string; clipboard: string; shelf: string; translation: string; trade: string };
+  pageNames: { todo: string; apps: string; clipboard: string; shelf: string; translation: string; trade: string };
   /** The tip on the status light, which opens the Agent page. */
   agentPage: string;
   calendar: string;
@@ -42,7 +42,7 @@ export const zhCN: IslandText = {
   todoListWithUpdate: "任务清单（有新版本）",
   clipboardHistory: "剪贴板历史",
   shelf: "文件中转",
-  pageNames: { todo: "待办", clipboard: "剪贴板", shelf: "文件中转", translation: "翻译", trade: "外贸工具" },
+  pageNames: { todo: "待办", apps: "快捷应用", clipboard: "剪贴板", shelf: "文件中转", translation: "翻译", trade: "外贸工具" },
   agentPage: "AI Agent",
   calendar: "日历",
   shelfCount: (count) => `文件中转里有 ${count} 个文件`,
@@ -66,7 +66,7 @@ export const en: IslandText = {
   todoListWithUpdate: "Tasks (update available)",
   clipboardHistory: "Clipboard history",
   shelf: "File shelf",
-  pageNames: { todo: "Todo", clipboard: "Clipboard", shelf: "File shelf", translation: "Translate", trade: "Trade tools" },
+  pageNames: { todo: "Todo", apps: "Quick apps", clipboard: "Clipboard", shelf: "File shelf", translation: "Translate", trade: "Trade tools" },
   agentPage: "AI Agent",
   calendar: "Calendar",
   shelfCount: (count) => (count === 1 ? "1 file on the shelf" : `${count} files on the shelf`),

@@ -20,6 +20,7 @@ import type { useClipboardHistory } from "../../features/clipboard/useClipboardH
 import { FileShelfPanel } from "../../features/file-shelf/FileShelfPanel";
 import type { useFileShelf } from "../../features/file-shelf/useFileShelf";
 import { TradeToolsPanel } from "../../features/trade/TradeToolsPanel";
+import { AppLauncherSection } from "../../features/app-launcher/AppLauncherSection";
 import { getTodoScrollStartRows } from "./layout";
 import type { useIslandAgentAlerts } from "./useIslandAgentAlerts";
 import type { useIslandFeatures } from "./useIslandFeatures";
@@ -109,6 +110,11 @@ export function IslandPages({
           />
         </div>
       )}
+      {page === "apps" && (
+        <div className="apps-page">
+          <AppLauncherSection dropPaths={null} standalone />
+        </div>
+      )}
       {page === "qq" && (
         <div className="message-panel">
           <MessagesPanel qqMail={qqMail} qqNotifications={qqNotifications} wechatReminders={wechatReminders} source={messageSource} enabledSources={features} onSourceChange={openMessages} onOpenMailSettings={() => openSettingsWindow("mail")} />
@@ -129,7 +135,7 @@ export function IslandPages({
       {page === "shelf" && <FileShelfPanel shelf={fileShelf} isDropTarget={isShelfDropping} revealOnDoubleClick={settings.shelfDoubleClick === "reveal"} />}
       {page === "trade" && (
         <div className="trade-page">
-          <TradeToolsPanel isOpen={mode === "expanded"} onContentHeight={onTradeHeight} launcherDropPaths={null} />
+          <TradeToolsPanel isOpen={mode === "expanded"} onContentHeight={onTradeHeight} />
         </div>
       )}
       {page === "todo" && (

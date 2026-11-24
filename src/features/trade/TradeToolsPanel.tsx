@@ -5,7 +5,6 @@ import { useWorldClock } from "../world-clock/useWorldClock";
 import { useFxRates } from "../fx-rates/useFxRates";
 import { QuoteSection } from "../quoter/QuoteSection";
 import { WriterSection } from "./WriterSection";
-import { AppLauncherSection } from "../app-launcher/AppLauncherSection";
 import type { ZoneView } from "../world-clock/zones";
 import "./TradeToolsPanel.css";
 
@@ -13,7 +12,7 @@ import "./TradeToolsPanel.css";
  * The trade tools page (trade edition): customer time zones with a "good to message" state,
  * and today's USD rates. One page, two sections; more trade tools join below over time.
  */
-export function TradeToolsPanel({ isOpen, onContentHeight, launcherDropPaths }: { isOpen: boolean; onContentHeight?: (height: number) => void; launcherDropPaths: string[] | null }) {
+export function TradeToolsPanel({ isOpen, onContentHeight }: { isOpen: boolean; onContentHeight?: (height: number) => void }) {
   const t = useTranslation();
   const panelRef = useRef<HTMLElement | null>(null);
 
@@ -62,7 +61,6 @@ export function TradeToolsPanel({ isOpen, onContentHeight, launcherDropPaths }: 
       </div>
       <QuoteSection rates={fx.rates} />
       <WriterSection />
-      <AppLauncherSection dropPaths={launcherDropPaths} />
     </section>
   );
 }

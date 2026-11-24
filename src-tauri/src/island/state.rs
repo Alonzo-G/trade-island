@@ -198,10 +198,9 @@ impl IslandWindowState {
     }
 
     pub(super) fn can_start_drag(self) -> bool {
-        matches!(self.mode, IslandMode::Collapsed)
-            && !self.is_tucked
-            && !self.is_dragging
-            && !self.position_locked
+        // Trade edition: the expanded island drags too (its header requests it); the tucked
+        // state stays undraggable and a drag never starts twice.
+        !self.is_tucked && !self.is_dragging && !self.position_locked
     }
 
     /// How much the corner radius setting enlarges or shrinks the default radii.

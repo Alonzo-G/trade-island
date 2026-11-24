@@ -36,8 +36,9 @@ try {
   localStorage.setItem(NATIVE_PLUGINS_KEY, JSON.stringify(["dingtalk", "zcode"]));
   await act(async () => root.render(<StrictMode><I18nProvider><Probe /></I18nProvider></StrictMode>));
   await act(async () => { await refreshPlugins(); });
-  check(nativeInstalled !== null && nativeInstalled["dingtalk"] === true && nativeInstalled["zcode"] === true,
-    "内置插件安装记录在 trade 版里生效");
+  // Trade edition: the built-in catalog ships empty, so saved installs resolve to nothing.
+  check(nativeInstalled !== null && Object.values(nativeInstalled).every((installed) => !installed),
+    "trade 版内置插件目录为空，安装记录不生效");
   check(document.querySelector("output")?.textContent?.includes('"live":{}'), "插件宿主快照无运行中会话");
   const event: MailEvent = {
     snapshot: { email: "test@example.com", configured: true, enabled: true, syncing: false,

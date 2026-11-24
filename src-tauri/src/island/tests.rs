@@ -16,15 +16,15 @@ fn state(mode: IslandMode, scale: f64, expanded_height: f64) -> IslandWindowStat
 }
 
 #[test]
-fn window_drag_requires_an_unlocked_collapsed_island() {
+fn window_drag_requires_an_unlocked_island_of_any_mode() {
     let mut island = IslandWindowState::default();
     assert!(island.can_start_drag());
     island.position_locked = true;
     assert!(!island.can_start_drag());
+    // Trade edition: the expanded island drags too (its header requests it).
     island.mode = IslandMode::Expanded;
-    assert!(!island.can_start_drag());
     island.position_locked = false;
-    assert!(!island.can_start_drag());
+    assert!(island.can_start_drag());
     island.mode = IslandMode::Collapsed;
     assert!(island.can_start_drag());
     island.is_tucked = true;

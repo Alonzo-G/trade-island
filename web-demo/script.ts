@@ -7,6 +7,7 @@ import type { DemoContent } from "./demoData";
 
 export const PAGE_BUTTONS: Record<IslandPage, string> = {
   todo: ".dot-button--todo",
+  apps: ".dot-button--apps",
   trade: ".dot-button--trade",
   clipboard: ".dot-button--clipboard",
   shelf: ".dot-button--shelf",

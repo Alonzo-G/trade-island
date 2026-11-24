@@ -25,12 +25,12 @@ test("the collapsed island's order, cover and the page dots load with defaults",
   assert.deepEqual(settings.collapsedPriority, ["agent", "todo"]);
   assert.equal(settings.collapsedShowCover, true);
   assert.equal(normalizeSettings({ collapsedShowCover: false }).collapsedShowCover, false);
-  assert.deepEqual(settings.pageOrder, ["todo", "clipboard", "shelf", "translation", "trade"]);
+  assert.deepEqual(settings.pageOrder, ["todo", "apps", "clipboard", "shelf", "translation", "trade"]);
   const saved = normalizeSettings({ collapsedPriority: ["todo"], collapsedShowCover: true, pageOrder: ["shelf", "todo"] });
   assert.deepEqual(saved.collapsedPriority, ["todo", "agent"]);
   assert.equal(saved.collapsedShowCover, true);
   // Orders saved before translation had a capsule get it at the end.
-  assert.deepEqual(saved.pageOrder, ["shelf", "todo", "clipboard", "translation", "trade"]);
+  assert.deepEqual(saved.pageOrder, ["shelf", "todo", "apps", "clipboard", "translation", "trade"]);
 });
 
 test("page buttons default to icons; a saved capsule choice is kept", () => {
