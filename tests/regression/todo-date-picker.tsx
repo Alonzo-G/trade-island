@@ -104,6 +104,9 @@ try {
     check(!picker() && !isIslandPickerOpen() && document.querySelector(".todo-date-picker__button--later"), "choosing a future date closes and releases the picker");
     check(height() === baseHeight, "closing restores the original panel height");
     await hover(true);
+    // The hover-expand delay (trade default 500ms) applies when the island is collapsed
+    // here; wait for the panel before poking the picker.
+    await update(async () => { await new Promise(resolve => setTimeout(resolve, 800)); });
     await click(".todo-date-picker__button");
     check(picker()!.querySelector(`[data-date="${addDays(today, 1)}"][aria-pressed=true]`), "reopening highlights the chosen date");
     await update(() => { document.activeElement!.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true })); });
