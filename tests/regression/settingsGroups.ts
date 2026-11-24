@@ -46,7 +46,7 @@ export async function checkGroups(category: string, panel: HTMLElement, check: (
     const tuck = rowsOf(panel, "贴边隐藏");
     check(titles(tuck).join() === "闲置时贴边隐藏,收起后贴边,Agent 运行时不贴边,显示歌词时不贴边,待办计时时不贴边"
       && tuck.slice(1).every((row) => row.classList.contains("settings-row--indent")), "General: auto-tuck with its delay and when not to tuck, all indented under it");
-    check(titles(rowsOf(panel, "位置")).join() === "回到默认位置,锁定小岛位置", "General: the position rows come last");
+    check(titles(rowsOf(panel, "位置")).join() === "回到默认位置,一键居中,锁定小岛位置", "General: the position rows come last");
   } else if (category === "todos") {
     check(titles(rowsOf(panel, "任务")).join() === "自动将未完成任务写入下一天,拖动调整顺序,一次显示几条", "Todos: the list options share a group");
     check(titles(rowsOf(panel, "番茄钟")).join() === "启用番茄钟", "Todos: the focus timer has its own group (reminders hidden while it is off)");
