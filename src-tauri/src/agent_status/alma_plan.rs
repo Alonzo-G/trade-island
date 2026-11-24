@@ -5,6 +5,7 @@
 //! file → no session. Alma itself has no per-session lifecycle hooks (it is a resident app,
 //! not a CLI agent), so the plan file's mtime is the "updated at" signal.
 
+use serde::Deserialize;
 use std::path::Path;
 
 use super::sessions::AgentSessionSummary;
