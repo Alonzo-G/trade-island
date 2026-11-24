@@ -13,7 +13,10 @@ export const AGENT_ALERT_SECONDS = [3, 5, 8, 15, 30] as const;
 // (IslandShell.css). 1.4x a 30px corner, for Apple's continuous corner (cornerShape.ts); the
 // collapsed bar's corners come out at 31px of its 38px height.
 export const DEFAULT_ISLAND_CORNER_RADIUS = 42;
-export const DEFAULT_HOVER_EXPAND_DELAY_MS = 0;
+// Trade edition: hover opens after a short pause, so brushing past the island does not
+// throw the panel open. 0 keeps the upstream instant-open behaviour if set so.
+export const DEFAULT_HOVER_EXPAND_DELAY_MS = 500;
+export const HOVER_EXPAND_DELAY_MS = { min: 0, max: 5000, default: DEFAULT_HOVER_EXPAND_DELAY_MS } as const;
 export const DEFAULT_HOVER_COLLAPSE_DELAY_MS = 0;
 export const DEFAULT_AUTO_TUCK_RETRACT_DELAY_MS = 500;
 // Tallest panel before the todo list and other long pages scroll. The default is the

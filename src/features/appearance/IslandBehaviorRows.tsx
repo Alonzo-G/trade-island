@@ -5,7 +5,7 @@ import { SettingsRow } from "../../components/settings/SettingsRow";
 import { SettingsNumberRow } from "../../components/settings/SettingsNumberRow";
 import { SettingsSliderRow } from "../../components/settings/SettingsSliderRow";
 import { SettingsToggleRow } from "../../components/settings/SettingsToggleRow";
-import { AUTO_COLLAPSE_SECONDS, GAME_NOTICE_SECONDS, TUCK_DELAY_SECONDS } from "./settingsLimits";
+import { AUTO_COLLAPSE_SECONDS, GAME_NOTICE_SECONDS, HOVER_EXPAND_DELAY_MS, TUCK_DELAY_SECONDS } from "./settingsLimits";
 import type { ExpandTrigger, IslandSettings } from "./types";
 
 type RowsProps = {
@@ -34,6 +34,18 @@ export function ExpandRows({ settings, onSettingsChange }: RowsProps) {
           />
         }
       />
+      {settings.expandTrigger === "hover" && (
+        <SettingsNumberRow
+          title={expand.hoverDelay}
+          description={expand.hoverDelayHint}
+          value={Math.round(settings.hoverExpandDelayMs / 100) / 10}
+          min={HOVER_EXPAND_DELAY_MS.min / 1000}
+          max={HOVER_EXPAND_DELAY_MS.max / 1000}
+          step={0.5}
+          unit={expand.secondsUnit}
+          onChange={(seconds) => update({ hoverExpandDelayMs: Math.round(seconds * 1000) })}
+        />
+      )}
       <SettingsNumberRow
         title={expand.autoCollapse}
         description={expand.autoCollapseHint}
