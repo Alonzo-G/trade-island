@@ -253,7 +253,6 @@ fn drag_island(window: WebviewWindow, current_state: IslandWindowState) -> Resul
 }
 
 #[tauri::command]
-#[tauri::command]
 pub fn center_island(app: AppHandle) -> Result<(), String> {
     let window = main_window(&app)?;
     let window_size = window
@@ -265,7 +264,7 @@ pub fn center_island(app: AppHandle) -> Result<(), String> {
         .ok_or_else(|| "No monitor is available for the island.".to_string())?;
     let monitor_position = monitor.position();
     let monitor_size = monitor.size();
-    let top_inset = super::geometry::monitor_top_inset(&monitor);
+    let top_inset = geometry::monitor_top_inset(&monitor);
     // Center within the work area (below the app bar), not the whole monitor.
     let usable_top = monitor_position.y + top_inset;
     let usable_height = monitor_size.height as i32 - top_inset;

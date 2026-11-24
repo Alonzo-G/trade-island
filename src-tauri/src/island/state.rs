@@ -29,7 +29,7 @@ pub(crate) fn game_quiet() -> bool {
     GAME_QUIET.load(Ordering::Acquire)
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq)]
 pub(crate) enum IslandMode {
     Collapsed,
     Expanded,
