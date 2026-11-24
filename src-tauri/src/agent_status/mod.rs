@@ -271,8 +271,8 @@ pub async fn list_agent_sessions(
     app: AppHandle,
     window_hours: Option<u32>,
     native: Option<Vec<String>>,
-    /// The island's todo save directory (trade edition): Alma's workspace, whose task graph
-    /// (`<workspace>/.alma/plan.json`) mirrors onto the Agent page as the "alma" provider.
+    // The island's todo save directory (trade edition): Alma's workspace, whose task graph
+    // (<workspace>/.alma/plan.json) mirrors onto the Agent page as the "alma" provider.
     alma_workspace: Option<String>,
 ) -> Result<Vec<sessions::AgentSessionSummary>, String> {
     let native = native.unwrap_or_default();
