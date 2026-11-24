@@ -1,19 +1,14 @@
 <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0EA5E9"/>
-      <stop offset="1" stop-color="#0F766E"/>
-    </linearGradient>
-  </defs>
-  <rect width="64" height="64" rx="14" fill="url(#g)"/>
-  <!-- container box -->
-  <rect x="16" y="30" width="24" height="14" rx="2" fill="none" stroke="#ffffff" stroke-width="2.6"/>
-  <line x1="22" y1="30" x2="22" y2="44" stroke="#ffffff" stroke-width="1.6"/>
-  <line x1="28" y1="30" x2="28" y2="44" stroke="#ffffff" stroke-width="1.6"/>
-  <line x1="34" y1="30" x2="34" y2="44" stroke="#ffffff" stroke-width="1.6"/>
-  <!-- sail / arrow rising -->
-  <path d="M44 44 L44 20 L54 32 Z" fill="#ffffff"/>
-  <circle cx="24" cy="22" r="4" fill="none" stroke="#ffffff" stroke-width="2.4"/>
-  <!-- horizon -->
-  <line x1="12" y1="50" x2="52" y2="50" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round"/>
+  <rect width="64" height="64" rx="14" fill="#0d0d0f"/>
+  <!-- hull -->
+  <path d="M14 40 L50 40 L44 48 L20 48 Z" fill="#ffffff"/>
+  <!-- mast -->
+  <line x1="30" y1="10" x2="30" y2="40" stroke="#ffffff" stroke-width="2.4"/>
+  <!-- main sail (right) -->
+  <path d="M32 12 L32 36 L48 36 Z" fill="#ffffff"/>
+  <!-- jib (left) -->
+  <path d="M28 16 L28 36 L16 36 Z" fill="#ffffff"/>
+  <!-- water lines -->
+  <rect x="8" y="52" width="48" height="3.6" fill="#4AA8E0"/>
+  <rect x="8" y="58" width="48" height="3.6" fill="#4AA8E0"/>
 </svg>

@@ -245,6 +245,39 @@ fn drag_island(window: WebviewWindow, current_state: IslandWindowState) -> Resul
 }
 
 #[tauri::command]
+#[tauri::command]
+pub fn center_island(app: AppHandle) -> Result<(), String> {
+    let window = main_window(&app)?;
+    let window_size = window
+        .outer_size()
+        .map_err(|error| format!("Failed to read the island size: {error}"))?;
+    let monitor = window
+        .current_monitor()
+        .map_err(|error| format!("Failed to read the monitor: {error}"))?
+        .ok_or_else(|| "No monitor is available for the island.".to_string())?;
+    let monitor_position = monitor.position();
+    let monitor_size = monitor.size();
+    let top_inset = super::geometry::monitor_top_inset(&monitor);
+    // Center within the work area (below the app bar), not the whole monitor.
+    let usable_top = monitor_position.y + top_inset;
+    let usable_height = monitor_size.height as i32 - top_inset;
+    let x = monitor_position.x + (monitor_size.width as i32 - window_size.width as i32) / 2;
+    let y = usable_top + (usable_height - window_size.height as i32) / 2;
+
+    mutate_window_state(|state| {
+        state.custom_position = Some(IslandPosition { x, y });
+        state.is_dragging = false;
+        state.side_attachment = "none";
+        *state
+    });
+    top_edge::set_attached(&window, false);
+    top_edge::clear_side_attachment(&window);
+    window
+        .set_position(tauri::Position::Physical(tauri::PhysicalPosition::new(x, y)))
+        .map_err(|error| format!("Failed to center the island: {error}"))
+}
+
+#[tauri::command]
 pub fn reset_island_position(app: AppHandle) -> Result<(), String> {
     let window = main_window(&app)?;
     let state = mutate_window_state(|state| {
@@ -318,6 +351,7 @@ macro_rules! tauri_commands {
             crate::island::set_island_interaction,
             crate::island::start_island_drag,
             crate::island::reset_island_position,
+            crate::island::center_island,
             crate::island::get_island_top_attachment,
             crate::island::set_island_game_quiet,
             crate::island::show_ready_island,
