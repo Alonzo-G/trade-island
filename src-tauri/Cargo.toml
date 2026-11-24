@@ -1,6 +1,6 @@
 [package]
 name = "trade-island"
-version = "0.1.3"
+version = "0.1.4"
 description = "A compact floating trade-work island for Windows."
 authors = ["you"]
 edition = "2021"
