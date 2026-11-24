@@ -110,13 +110,18 @@ export function GameModeRow({ settings, onSettingsChange }: RowsProps) {
 }
 
 /** A way back to the default position, and locking it. */
-export function PositionRows({ settings, onSettingsChange, onResetPosition }: RowsProps & { onResetPosition: () => void }) {
+export function PositionRows({ settings, onSettingsChange, onResetPosition, onCenterIsland }: RowsProps & { onResetPosition: () => void; onCenterIsland: () => void }) {
   const position = useTranslation().settings.position;
   return (
     <>
       <SettingsRow
         title={position.resetRow}
         control={<SettingsLinkButton onClick={onResetPosition}>{position.reset}</SettingsLinkButton>}
+      />
+      <SettingsRow
+        title={position.center}
+        description={position.centerHint}
+        control={<SettingsLinkButton onClick={onCenterIsland}>{position.center}</SettingsLinkButton>}
       />
       <SettingsToggleRow
         title={position.lock}

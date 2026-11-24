@@ -4,7 +4,7 @@ import { BehaviorSettingsSection } from "../../features/appearance/BehaviorSetti
 import { ExpandRows, GameModeRow, PositionRows, TuckRows } from "../../features/appearance/IslandBehaviorRows";
 import { KeepVisibleRows } from "../../features/appearance/KeepVisibleRows";
 import type { IslandSettings } from "../../features/appearance/types";
-import { requestIslandPositionReset } from "./storage";
+import { requestIslandPositionCenter, requestIslandPositionReset } from "./storage";
 import { useLaunchAtStartup } from "./useLaunchAtStartup";
 
 /**
@@ -45,7 +45,7 @@ export function GeneralSettingsPage({
         <ExpandRows {...rows} />
       </SettingsGroup>
       <SettingsGroup title={t.settings.position.title} footer={settings.positionLocked ? undefined : t.settings.position.moveHint}>
-        <PositionRows {...rows} onResetPosition={requestIslandPositionReset} />
+        <PositionRows {...rows} onResetPosition={requestIslandPositionReset} onCenterIsland={requestIslandPositionCenter} />
       </SettingsGroup>
       <SettingsGroup
         title={t.settings.expand.tuckTitle}

@@ -164,6 +164,11 @@ export function startIslandDrag() {
   return invoke("start_island_drag");
 }
 
+/** Trade edition: centers the island in the current monitor's work area. */
+export function centerIsland() {
+  return invoke("center_island");
+}
+
 export function resetIslandPosition() {
   return invoke("reset_island_position");
 }

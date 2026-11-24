@@ -10,7 +10,7 @@ import { setIslandTopEdgeCapsule } from "./topEdge";
 import { useIslandPosition } from "./useIslandPosition";
 import { useGlassCapture } from "./useGlassCapture";
 import { useNativeLayout } from "./useNativeLayout";
-import { useSettingsPositionReset } from "./useSettingsPositionReset";
+import { useSettingsPositionCenter, useSettingsPositionReset } from "./useSettingsPositionReset";
 import type { IslandMode, NativeGlassState } from "./types";
 import { isIslandPickerOpen } from "../../lib/islandPicker";
 
@@ -132,6 +132,13 @@ export function useIslandWindow({
     }
   }, [islandPositionRef, setIsPositionDetached, setSettings, settings, syncNativeLayout]);
   useSettingsPositionReset(resetIslandPosition);
+  // Trade edition: Settings > Position > Center centers the island in the work area.
+  const centerIslandPosition = useCallback(() => {
+    void islandApi.centerIsland().catch((error) => {
+      console.error("Failed to center the island", error);
+    });
+  }, []);
+  useSettingsPositionCenter(centerIslandPosition);
   useEffect(() => setIslandTopEdgeCapsule(settings.islandShape === "capsule"), [settings.islandShape]);
 
   // One native call at a time, and only the latest state once it returns. An Agent page that

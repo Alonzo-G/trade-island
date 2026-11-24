@@ -70,6 +70,14 @@ export function requestIslandPositionReset() {
   writeJson(ISLAND_POSITION_RESET_STORAGE_KEY, { requestedAt: Date.now() });
 }
 
+// Trade edition: center the island in the current monitor's work area. Same relay as the
+// reset above — the island watches this key and runs its native center command on change.
+export const ISLAND_POSITION_CENTER_STORAGE_KEY = "focusd-island-position-center";
+
+export function requestIslandPositionCenter() {
+  writeJson(ISLAND_POSITION_CENTER_STORAGE_KEY, { requestedAt: Date.now() });
+}
+
 /** Whether a stored reset request is fresh and well formed. */
 export function isFreshPositionReset(stored: string | null, now = Date.now()) {
   if (stored === null) {
