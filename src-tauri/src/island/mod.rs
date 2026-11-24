@@ -108,6 +108,14 @@ pub fn set_island_interaction(
         })
     });
     let state = mutate_window_state(|state| {
+        if state.mode != mode {
+            state.mode_changed_at_ms = Some(
+                std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .map(|d| d.as_millis() as i64)
+                    .unwrap_or(0),
+            );
+        }
         state.mode = mode;
         state.is_tucked = is_tucked.unwrap_or(false);
         state.tuck_style = state::TuckStyle::from_value(tuck_style.as_deref());

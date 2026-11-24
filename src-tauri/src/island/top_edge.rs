@@ -38,19 +38,24 @@ pub(crate) fn snap_to_top(window: &WebviewWindow, position: IslandPosition) -> I
     let monitor_position = monitor.position();
     let monitor_size = monitor.size();
     let window_width = window.outer_size().map(|size| size.width as i32).unwrap_or(0);
+    // The island sits centred in its transparent stage; what the user sees (and what should
+    // touch the screen edge) is the island rectangle, not the whole stage window.
+    let state = read_window_state();
+    let island_physical_width = (state.active_size().0 * scale).round() as i32;
+    let island_left = position.x + (window_width - island_physical_width) / 2;
 
     // Trade edition: the island can also live on the left or right screen edge. The nearest of
     // the three edges within the snap distance wins; sides only snap, tucking stays top-only.
     let distance_to_top = (position.y - top).abs();
-    let distance_to_left = (position.x - monitor_position.x).abs();
-    let distance_to_right = (position.x + window_width - (monitor_position.x + monitor_size.width as i32)).abs();
+    let distance_to_left = (island_left - monitor_position.x).abs();
+    let distance_to_right = (island_left + island_physical_width - (monitor_position.x + monitor_size.width as i32)).abs();
 
     let (edge, x, y) = if distance_to_top <= distance_to_left && distance_to_top <= distance_to_right {
         ("top", position.x, snapped_y(position.y, top, snap_distance))
     } else if distance_to_left <= distance_to_right {
-        ("left", snapped_y(position.x, monitor_position.x, snap_distance), position.y)
+        ("left", snapped_y(position.x, monitor_position.x - (window_width - island_physical_width) / 2, snap_distance), position.y)
     } else {
-        ("right", snapped_y(position.x, monitor_position.x + monitor_size.width as i32 - window_width, snap_distance), position.y)
+        ("right", snapped_y(position.x, monitor_position.x + monitor_size.width as i32 - island_physical_width - (window_width - island_physical_width) / 2, snap_distance), position.y)
     };
 
     let within = match edge {

@@ -154,6 +154,8 @@ pub(crate) struct IslandWindowState {
     /// Side snap (trade edition): "top" | "left" | "right" | "none". Sides only snap and
     /// shape the island; the tuck-into-the-edge animation stays a top-edge feature.
     pub(super) side_attachment: &'static str,
+    /// When the island mode last changed (expand/collapse), for the passthrough hold window.
+    pub(super) mode_changed_at_ms: Option<i64>,
     pub(super) glass_enabled: bool,
     pub(super) glass_intensity: f64,
     pub(super) glass_tint: (u8, u8, u8),
@@ -225,6 +227,11 @@ impl IslandWindowState {
         }
     }
 
+    /// Millis since the island's mode last changed, for the passthrough settle window.
+    pub(super) fn mode_changed_at_ms(self) -> i64 {
+        self.mode_changed_at_ms.unwrap_or(0)
+    }
+
     pub(super) fn active_scale(self) -> f64 {
         match self.mode {
             IslandMode::Collapsed => self.collapsed_scale,
@@ -257,6 +264,7 @@ impl Default for IslandWindowState {
             position_locked: false,
             top_attached: true,
             side_attachment: "top",
+            mode_changed_at_ms: None,
             glass_enabled: false,
             glass_intensity: 72.0,
             glass_tint: (47, 47, 55),

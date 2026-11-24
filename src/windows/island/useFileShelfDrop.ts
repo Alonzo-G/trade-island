@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { listenFileDrop } from "../../features/file-shelf/api";
+import { addAppLauncherPaths } from "../../features/app-launcher/api";
 import type { FileShelfController } from "../../features/file-shelf/useFileShelf";
 import type { IslandMode, IslandPage } from "./types";
 
@@ -44,6 +45,19 @@ export function useFileShelfDrop(options: FileShelfDropOptions) {
       const current = latestRef.current;
       // A shelf item dragged out and back over the island is not a new file.
       if (!current.enabled || current.shelf.isDraggingOut()) return;
+
+      // Trade edition: app shortcuts (.lnk / .exe / .url) belong to the quick-app launcher,
+      // never the file shelf — on any page, without the expand-and-swap side effects.
+      if (event.type === "drop" || event.type === "enter") {
+        const appShortcuts = event.paths.filter((path) => {
+          const lower = path.toLowerCase();
+          return lower.endsWith(".lnk") || lower.endsWith(".exe") || lower.endsWith(".url");
+        });
+        if (appShortcuts.length === event.paths.length && appShortcuts.length > 0) {
+          if (event.type === "drop") void addAppLauncherPaths(appShortcuts);
+          return;
+        }
+      }
 
       if (event.type === "enter") {
         const isShelfOpen = current.mode === "expanded" && current.page === "shelf";

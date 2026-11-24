@@ -31,8 +31,25 @@ pub(crate) fn start_cursor_passthrough_loop(window: WebviewWindow) {
             // A press that started on the island (selecting text, dragging a slider or a
             // scrollbar) keeps the window taking the mouse until it is released: passing clicks
             // through mid-drag ended the gesture and dropped the selection being made.
+            // Trade edition: while a window drag or the expand/collapse animation is running,
+            // the island also keeps the mouse — flip-flopping passthrough mid-drag broke both
+            // (the island grew under the cursor, the cursor fell out, the island collapsed,
+            // and the whole hover loop repeated forever).
+            let state = read_window_state();
+            let dragging = state.is_dragging;
+            // Right after the mode switched, the island's CSS size animation is still running
+            // while the native hit-test already uses the new size: the cursor can sit outside
+            // the not-yet-grown island, flip passthrough, collapse it, and the whole
+            // hover loop repeats forever. Hold the mouse through that window.
+            let now_ms = std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .map(|d| d.as_millis() as i64)
+                .unwrap_or(0);
+            let settling = state.mode_changed_at_ms() + 700 > now_ms;
             let is_inside = hwnd.is_none_or(cursor_is_inside_island)
-                || (!ignoring_cursor && win32::input::is_left_button_down());
+                || (!ignoring_cursor && win32::input::is_left_button_down())
+                || dragging
+                || settling;
             let should_ignore = !is_inside;
 
             if should_ignore != ignoring_cursor
