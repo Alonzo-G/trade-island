@@ -58,7 +58,7 @@ export function isSessionActive(session: Pick<AgentSessionSummary, "phase" | "ba
   return isActivePhase(session.phase) || hasBackgroundWork(session);
 }
 
-export type SessionFilter = { claudeCode: boolean; codex: boolean; dsh?: boolean; workbuddy?: boolean; plugin?: boolean } & Partial<Record<NativeAgentProvider, boolean>>;
+export type SessionFilter = { claudeCode: boolean; codex: boolean; dsh?: boolean; workbuddy?: boolean; plugin?: boolean; alma?: boolean } & Partial<Record<NativeAgentProvider, boolean>>;
 
 /** Sessions of the agents the user wants to see. */
 export function filterSessions(sessions: AgentSessionSummary[], filter: SessionFilter) {

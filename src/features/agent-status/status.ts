@@ -22,6 +22,7 @@ export const AGENT_PROVIDER_LABELS: Record<AgentProvider, string> = {
   claudeCode: "Claude Code",
   dsh: "DeepSeek Harness",
   workbuddy: "WorkBuddy",
+  alma: "Alma",
   plugin: "Plugin",
   cursor: "Cursor",
   kimiCode: "Kimi Code",

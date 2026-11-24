@@ -11,7 +11,7 @@ const NONE: readonly NativeAgentProvider[] = [];
  * when nothing changed so the island does not re-render on every poll. `native`: the
  * plugin-market agents to read as well.
  */
-export function useAgentSessions(enabled: boolean, intervalMs: number, windowHours?: number, native: readonly NativeAgentProvider[] = NONE) {
+export function useAgentSessions(enabled: boolean, intervalMs: number, windowHours?: number, native: readonly NativeAgentProvider[] = NONE, almaWorkspace?: string) {
   const nativeKey = native.join(",");
   const [sessions, setSessions] = useState<AgentSessionSummary[]>(NO_SESSIONS);
   const isLoading = useRef(false);
@@ -27,7 +27,7 @@ export function useAgentSessions(enabled: boolean, intervalMs: number, windowHou
       isLoading.current = true;
       try {
         const sources = nativeKey ? nativeKey.split(",") as NativeAgentProvider[] : [];
-        const next = uniqueSessions(await listAgentSessions(windowHours, sources));
+        const next = uniqueSessions(await listAgentSessions(windowHours, sources, almaWorkspace));
         if (!cancelled) setSessions((current) => (sameAgentSessions(current, next) ? current : next));
       } catch (error) {
         console.error("Failed to list agent sessions", error);
@@ -44,7 +44,7 @@ export function useAgentSessions(enabled: boolean, intervalMs: number, windowHou
       cancelled = true;
       window.clearInterval(timer);
     };
-  }, [enabled, intervalMs, windowHours, nativeKey]);
+  }, [enabled, intervalMs, windowHours, nativeKey, almaWorkspace]);
 
   return sessions;
 }

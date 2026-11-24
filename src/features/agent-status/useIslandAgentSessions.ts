@@ -1,3 +1,4 @@
+import { loadSaveDirectory } from "../todos/storage";
 import { useMemo } from "react";
 import type { IslandSettings } from "../appearance/types";
 import { countActiveSessions, filterSessions, isSessionActive } from "./sessionList";
@@ -21,7 +22,11 @@ export function useIslandAgentSessions(settings: AgentSessionSettings) {
   // Read every second: the collapsed island names sessions from it and holds a finished one's
   // title for three seconds after its file last changed. Answered from a cache in about 1 ms.
   const native = useNativeAgents(settings);
-  const builtInSessions = useAgentSessions(settings.agentStatusEnabled, 1000, settings.agentSessionHours, nativeSessionSources(native));
+  // Alma's task graph lives in the workspace the island saves todos to (trade edition): pass
+  // it as the "alma" session source when agent status is on.
+  const almaWorkspace = loadSaveDirectory();
+  const almaWorkspaceKey = almaWorkspace || "";
+  const builtInSessions = useAgentSessions(settings.agentStatusEnabled, 1000, settings.agentSessionHours, nativeSessionSources(native), almaWorkspaceKey);
   const plugins = usePlugins();
   const allAgentSessions = useMemo(() => settings.agentStatusEnabled ? [...builtInSessions, ...pluginSessions(plugins, settings.agentSessionHours, Date.now())] : builtInSessions, [builtInSessions, plugins, settings.agentSessionHours, settings.agentStatusEnabled]);
   // Hidden agents are left out of the page, the count, the collapsed title, alerts and sounds.

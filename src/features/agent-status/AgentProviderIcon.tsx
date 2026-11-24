@@ -7,6 +7,7 @@ import kimiCodeIcon from "../../assets/brands/kimi-code.svg";
 import hermesIcon from "../../assets/brands/hermes.svg";
 import zcodeIcon from "../../assets/brands/zcode.svg";
 import type { AgentProvider } from "./api";
+import almaIcon from "../../assets/brands/alma.svg";
 import { Puzzle } from "lucide-react";
 import "./AgentProviderIcon.css";
 
@@ -16,6 +17,7 @@ const PROVIDER_ICONS: Record<Exclude<AgentProvider, "plugin">, string> = {
   codex: codexIcon,
   dsh: deepseekIcon,
   workbuddy: workbuddyIcon,
+  alma: almaIcon,
   cursor: cursorIcon,
   kimiCode: kimiCodeIcon,
   hermes: hermesIcon,

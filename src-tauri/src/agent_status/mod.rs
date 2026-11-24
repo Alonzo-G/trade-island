@@ -43,6 +43,7 @@ mod tests;
 mod session_scan;
 mod sessions;
 mod title;
+mod alma_plan;
 mod todo_list;
 mod tool_call;
 pub(crate) mod uninstall;
@@ -270,6 +271,9 @@ pub async fn list_agent_sessions(
     app: AppHandle,
     window_hours: Option<u32>,
     native: Option<Vec<String>>,
+    /// The island's todo save directory (trade edition): Alma's workspace, whose task graph
+    /// (`<workspace>/.alma/plan.json`) mirrors onto the Agent page as the "alma" provider.
+    alma_workspace: Option<String>,
 ) -> Result<Vec<sessions::AgentSessionSummary>, String> {
     let native = native.unwrap_or_default();
     let wants = move |agent: &str| native.iter().any(|name| name == agent);
@@ -287,6 +291,9 @@ pub async fn list_agent_sessions(
             session_host::attach_hosts(&home_dir, Some(&app_dir), &mut sessions);
             sessions.extend(dsh_sessions::list_sessions(&home_dir, current_unix_millis(), window_ms));
             sessions.extend(workbuddy_sessions::list_sessions(&home_dir, current_unix_millis(), window_ms));
+            if let Some(workspace) = alma_workspace.filter(|value| !value.trim().is_empty()) {
+                sessions.extend(alma_plan::list_alma_session(Some(std::path::Path::new(workspace.trim())), current_unix_millis()));
+            }
             if wants("cursor") {
                 sessions.extend(throttled(&CURSOR, window_ms, || cursor_sessions::list_sessions(current_unix_millis(), window_ms)));
             }
