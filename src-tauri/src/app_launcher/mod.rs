@@ -40,7 +40,7 @@ pub struct LauncherSnapshot {
 
 static LAUNCHER: OnceLock<Mutex<LauncherState>> = OnceLock::new();
 
-struct LauncherState {
+pub(super) struct LauncherState {
     file: PathBuf,
     items: Vec<LauncherItem>,
 }
