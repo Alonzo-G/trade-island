@@ -97,7 +97,7 @@ pub fn init(app: &AppHandle) -> Result<(), String> {
     Ok(())
 }
 
-pub(super) fn with_state(change: impl FnOnce(&mut LauncherState) -> Result<LauncherSnapshot, String>) -> Result<LauncherSnapshot, String> {
+pub(super) fn with_state<T>(change: impl FnOnce(&mut LauncherState) -> Result<T, String>) -> Result<T, String> {
     let mutex = service()?;
     let mut state = mutex.lock().unwrap_or_else(PoisonError::into_inner);
     change(&mut state)

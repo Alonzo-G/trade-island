@@ -122,10 +122,11 @@ pub async fn reorder_app_launcher(
 #[tauri::command]
 pub async fn start_app_launcher_item(id: String) -> Result<(), String> {
     let path = with_state(|state| {
-        state.items.iter().find(|item| item.id == id)
+        let path = state.items.iter().find(|item| item.id == id)
             .map(|item| item.path.clone())
-            .ok_or_else(|| "The shortcut was removed.".to_string())
-    })?;
+            .ok_or_else(|| "The shortcut was removed.".to_string())?;
+        Ok((path, LauncherSnapshot { items: state.items.clone() }))
+    })?.0;
     if !std::path::Path::new(&path).exists() {
         return Err(format!("找不到 {path}，它可能已被移动或卸载。"));
     }
@@ -138,9 +139,10 @@ pub async fn start_app_launcher_item(id: String) -> Result<(), String> {
 #[tauri::command]
 pub async fn get_app_launcher_icon(id: String) -> Result<Option<String>, String> {
     let path = with_state(|state| {
-        state.items.iter().find(|item| item.id == id)
+        let path = state.items.iter().find(|item| item.id == id)
             .map(|item| item.path.clone())
-            .ok_or_else(|| "The shortcut was removed.".to_string())
-    })?;
+            .ok_or_else(|| "The shortcut was removed.".to_string())?;
+        Ok((path, LauncherSnapshot { items: state.items.clone() }))
+    })?.0;
     Ok(super::icon::extract_icon_data_url(&path))
 }
